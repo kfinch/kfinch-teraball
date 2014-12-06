@@ -1,0 +1,133 @@
+MAP_SIZE
+600 2000
+END
+
+PLAYER_START
+300 1950
+END
+
+ENTITIES
+terrain rectangle 300 1850 100 25
+terrain rectangle 175 1575 75 25
+terrain rectangle 425 1575 75 25
+terrain polygon 200 1200 4 100 100 100 50 -50 -100 -100 -100
+terrain polygon 400 1200 4 -100 100 100 -100 50 -100 -100 50
+terrain circle 125 975 25
+terrain circle 475 975 25
+terrain circle 50 850 50
+terrain circle 300 850 50
+terrain circle 550 850 50
+terrain polygon 150 725 4 -100 125 100 -75 100 -125 -100 75
+terrain polygon 450 725 4 100 125 -100 -75 -100 -125 100 75
+terrain rectangle 300 175 50 25
+
+mine 100 1700
+mine 200 1700
+mine 300 1700
+mine 400 1700
+mine 500 1700
+
+mine 300 1400
+mine 100 1300
+mine 500 1300
+
+mine 225 525
+mine 225 575
+mine 375 525
+mine 375 575
+
+mine 125 475
+mine 125 525
+mine 125 575
+mine 75 575
+mine 25 475
+
+mine 475 475
+mine 475 525
+mine 475 575
+mine 525 575
+mine 575 475
+
+mine 125 425
+mine 175 425
+mine 225 425
+mine 275 425
+mine 325 425
+mine 375 425
+mine 425 425
+mine 475 425
+
+mine 225 175
+mine 375 175
+
+gunturret 175 1475 0.5
+gunturret 425 1475 0.5
+gunturret 75 75 0.5
+gunturret 525 75 0.5
+
+missileturret 300 1100
+
+coin 50 1900
+coin 50 1875
+coin 50 1850
+coin 50 1825
+coin 50 1800
+
+coin 550 1900
+coin 550 1875
+coin 550 1850
+coin 550 1825
+coin 550 1800
+
+coin 170 1270
+coin 200 1300
+coin 230 1330
+
+coin 430 1270
+coin 400 1300
+coin 370 1330
+
+coin 300 500
+coin 300 525
+coin 300 550
+coin 300 575
+coin 300 600
+
+coin 125 650
+coin 75 650
+coin 100 625
+coin 100 675
+
+coin 475 650
+coin 525 650
+coin 500 625
+coin 500 675
+
+coin 240 370
+coin 270 370
+coin 330 370
+coin 360 370
+
+bigcoin 300 1500
+bigcoin 300 1170
+bigcoin 300 370
+
+fuelpickup 90 940
+fuelpickup 510 940
+
+exit 300 70
+
+button b1 300 950 onepress
+gate g1a and true rectangle 175 850 82 15
+gate g1b and true rectangle 425 850 82 15
+link b1 g1a
+link b1 g1b
+wire w1a and true pipe 2 false 3 300 950 250 950 200 850
+wire w1b and true pipe 2 false 3 300 950 350 950 400 850
+link b1 w1a
+link b1 w1b
+END
+
+NEXT_STAGE
+stage2.tbstage
+END

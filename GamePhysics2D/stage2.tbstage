@@ -1,0 +1,314 @@
+MAP_SIZE
+1600 1600
+END
+
+PLAYER_START
+800 1500
+END
+
+ENTITIES
+terrain rectangle 550 600 100 15
+terrain rectangle 400 350 15 200
+
+terrain rectangle 1050 600 100 15
+terrain rectangle 1200 350 15 200
+
+mine 750 75
+mine 850 75
+
+mine 750 125
+mine 850 125
+
+mine 600 175
+mine 650 175
+mine 700 175
+mine 750 175
+
+mine 850 175
+mine 900 175
+mine 950 175
+mine 1000 175
+
+mine 600 275
+mine 650 275
+mine 700 275
+mine 750 275
+
+mine 850 275
+mine 900 275
+mine 950 275
+mine 1000 275
+
+mine 750 325
+mine 850 325
+
+mine 750 375
+mine 850 375
+
+mine 750 425
+mine 850 425
+
+gunturret 525 225 0.5
+gunturret 1075 225 0.5
+gunturret 800 525 0.5
+
+button nb1 625 350 onepress
+gate ng1 and false rectangle 600 225 15 25
+link nb1 ng1
+wire nw1 and false pipe 2 false 3 625 350 625 250 600 225
+link nb1 nw1
+
+button nb2 975 350 onepress
+gate ng2 and false rectangle 1000 225 15 25
+link nb2 ng2
+wire nw2 and false pipe 2 false 3 975 350 975 250 1000 225
+link nb2 nw2
+
+button nb3a 650 225 onepress
+button nb3b 950 225 onepress
+gate ng3 and true rectangle 800 75 25 15
+link nb3a ng3
+link nb3b ng3
+wire nw3a and true pipe 2 false 3 650 225 650 125 800 75
+link nb3a nw3a
+wire nw3b and true pipe 2 false 3 950 225 950 125 800 75
+link nb3b nw3b
+
+terrain polygon 0 0 3 0 0 100 0 0 100
+terrain circle 150 150 50
+terrain circle 150 350 50
+terrain circle 400 150 50
+
+missileturret 250 250
+
+fuelpickup 350 350
+
+coin 50 100
+coin 50 125
+coin 50 150
+coin 50 175
+coin 50 200
+
+coin 100 50
+coin 125 50
+coin 150 50
+coin 175 50
+coin 200 50
+
+terrain polygon 1600 0 3 0 0 -100 0 0 100
+terrain circle 1450 150 50
+terrain circle 1450 350 50
+terrain circle 1200 150 50
+
+missileturret 1350 250
+
+fuelpickup 1250 350
+
+coin 1550 100
+coin 1550 125
+coin 1550 150
+coin 1550 175
+coin 1550 200
+
+coin 1500 50
+coin 1475 50
+coin 1450 50
+coin 1425 50
+coin 1400 50
+
+terrain circle 1300 500 30
+terrain circle 1500 500 30
+
+button neb1 1400 450 onepress
+gate neg1 and false pipe 8 false 4 1300 525 1300 650 1500 650 1500 525
+link neb1 neg1
+wire new1a and false pipe 2 false 4 1400 450 1350 470 1350 530 1300 550
+link neb1 new1a
+wire new1b and false pipe 2 false 4 1400 450 1450 470 1450 530 1500 550
+link neb1 new1b
+
+bigcoin 1400 550
+coin 1350 550
+coin 1375 550
+coin 1425 550
+coin 1450 550
+coin 1400 500
+coin 1400 525
+coin 1400 575
+coin 1400 600
+
+terrain pipe 15 false 3 600 1400 600 1500 700 1600
+terrain pipe 15 false 3 1000 1400 1000 1500 900 1600
+
+terrain polygon 750 1550 3 -50 -50 -50 50 50 50
+terrain polygon 850 1550 3 50 -50 50 50 -50 50
+
+terrain rectangle 650 1250 50 15
+terrain rectangle 950 1250 50 15
+
+mine 725 1250
+mine 775 1250
+mine 825 1250
+mine 875 1250
+
+coin 750 1300
+coin 775 1300
+bigcoin 800 1300
+coin 825 1300
+coin 850 1300
+
+terrain polygon 700 900 4 100 -100 100 -50 -100 100 -100 50
+terrain polygon 900 900 4 -100 -100 -100 -50 100 100 100 50
+
+coin 960 840
+coin 980 855
+bigcoin 1000 870
+coin 1020 885
+coin 1040 900
+
+mine 625 1150
+mine 625 1100
+mine 975 1150
+mine 975 1100
+
+keyedexit exit 800 1000 3
+exitkey key1 800 225 violet
+link exit key1
+exitkey key2 100 1300 blue
+link exit key2
+exitkey key3 1400 1000 green
+link exit key3
+
+fuelpickup 650 750
+patrollingmine 4 600 800 700 800 700 700 600 700 0.5
+patrollingmine 4 700 700 600 700 600 800 700 800 0.5
+
+terrain rectangle 1185 1550 15 50
+terrain rectangle 1185 1200 15 100
+terrain circle 1185 1100 30
+terrain rectangle 1240 1100 60 15
+
+terrain rectangle 1550 1100 50 15
+terrain circle 1610 1100 30
+
+terrain circle 1185 900 30
+
+terrain polygon 1100 815 4 100 125 100 75 -100 -75 -100 -25
+
+button eb1 1250 1000 onepress
+gate eg1 and true rectangle 1185 1000 15 82
+link eb1 eg1
+wire ew1 and true pipe 2 false 2 1250 1000 1185 1000
+link eb1 ew1
+
+patrollingmine 4 1300 1300 1500 1300 1500 1500 1300 1500 1
+patrollingmine 4 1500 1300 1500 1500 1300 1500 1300 1300 1
+patrollingmine 4 1500 1500 1300 1500 1300 1300 1500 1300 1
+patrollingmine 4 1300 1500 1300 1300 1500 1300 1500 1500 1
+
+patrollingmine 2 1300 1200 1500 1200 0.5
+
+coin 1350 1400
+coin 1375 1400
+coin 1425 1400
+coin 1450 1400
+coin 1400 1350
+coin 1400 1375
+coin 1400 1425
+coin 1400 1450
+bigcoin 1400 1400
+
+terrain polygon 1600 1600 3 0 0 -100 0 0 -100
+
+mine 1325 1075
+mine 1475 1075
+mine 1325 925
+mine 1475 925
+
+mine 1275 875
+mine 1225 825
+mine 1525 875
+mine 1575 825
+
+fuelpickup 1550 950
+bigcoin 1550 975
+fuelpickup 1550 1000
+
+terrain circle 1400 800 50
+
+gunturret 1225 725 0.5
+gunturret 1575 725 0.5
+
+terrain polygon 450 1600 3 -50 0 0 -50 50 0
+terrain polygon 450 1400 4 -50 0 0 50 50 0 0 -50
+terrain polygon 450 1200 4 -50 0 0 50 50 0 0 -50
+terrain polygon 450 1000 3 -50 0 0 50 50 0
+
+patrollingmine 2 450 1525 450 1475 0.25
+patrollingmine 2 450 1325 450 1275 0.25
+patrollingmine 2 450 1125 450 1075 0.25
+
+bigcoin 350 1300
+
+patrollingmine 4 250 1550 350 1550 350 1450 250 1450 0.5
+patrollingmine 4 350 1450 250 1450 250 1550 350 1550 0.5
+bigcoin 300 1500
+
+patrollingmine 4 250 1050 350 1050 350 1150 250 1150 0.5
+patrollingmine 4 350 1150 250 1150 250 1050 350 1050 0.5
+bigcoin 300 1100
+
+terrain polygon 250 1300 3 50 0 -50 100 -50 -100
+terrain polygon 100 1500 3 100 100 -100 100 -100 -100
+terrain polygon 100 1100 3 100 -100 -100 -100 -100 100
+
+patrollingmine 2 125 1475 175 1425 0.25
+patrollingmine 2 125 1125 175 1175 0.25
+
+patrollingmine 4 25 1300 100 1375 175 1300 100 1225 0.5
+patrollingmine 4 175 1300 100 1225 25 1300 100 1375 0.5
+
+terrain polygon 400 950 4 0 50 100 50 0 -50 -100 -50
+
+terrain circle 300 900 10
+terrain circle 400 900 10
+terrain rectangle 350 900 50 6
+terrain circle 300 700 10
+terrain circle 400 700 10
+terrain rectangle 350 700 50 6
+
+terrain pipe 6 false 3 400 900 500 800 400 700
+bigcoin 350 775
+bigcoin 325 800
+bigcoin 350 800
+bigcoin 375 800
+bigcoin 350 825
+
+button wb1 100 800 onepress
+gate wg1 and true pipe 6 false 3 298 898 200 800 298 702
+link wb1 wg1
+wire ww1 and true pipe 2 false 2 100 800 200 800
+link wb1 ww1
+
+button wb2 100 600 onepress
+gate wg2 and true pipe 4 true 4 75 775 75 825 125 825 125 775
+link wb2 wg2
+wire ww2 and true pipe 2 false 2 100 600 100 775
+link wb2 ww2
+
+button wb3 250 600 onepress
+gate wg3 and true pipe 4 true 4 75 575 75 625 125 625 125 575
+link wb3 wg3
+wire ww3 and true pipe 2 false 2 250 600 125 600
+link wb3 ww3
+
+button wb4 400 600 onepress
+gate wg4 and true pipe 4 true 4 225 575 225 625 275 625 275 575
+link wb4 wg4
+wire ww4 and true pipe 2 false 2 400 600 275 600
+link wb4 ww4
+END
+
+NEXT_STAGE
+NONE
+END
