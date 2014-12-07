@@ -1,5 +1,7 @@
 package tests;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import gamePhysics2D.BoundingAABox;
@@ -16,7 +18,7 @@ import gamePhysics2D.Vector2d;
 public class CaseTester {
 
 	public static void main(String args[]){
-		rotatingPolygonTest();
+		fileWriteTest();
 	}
 	
 	private static void test1(){
@@ -81,5 +83,15 @@ public class CaseTester {
 		brp.setAngle(0);
 		
 		brp.setAngle(Math.PI);
+	}
+	
+	private static void fileWriteTest(){
+		try {
+			PrintWriter writer = new PrintWriter("filewritetest.txt");
+			writer.println("do not be alarmed. this is a kindness");
+			writer.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("file not found");
+		}
 	}
 }

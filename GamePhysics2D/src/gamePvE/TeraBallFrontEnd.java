@@ -55,10 +55,6 @@ public class TeraBallFrontEnd extends JFrame {
     	add(containerPanel, BorderLayout.CENTER);
     
     	swapToMenuPanel();
-	
-		//TODO: remove once we can start from menu;
-    	//((CardLayout)containerPanel.getLayout()).show(containerPanel, GAME_CARDNAME);
-		//game.start();
 	}
 	
 	public void swapToGamePanel(){

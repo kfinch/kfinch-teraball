@@ -132,6 +132,10 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 		display.repaint();
 	}
 	
+	public void saveStageFile(){
+		writeStageFile(openedFile);
+	}
+	
 	/**
 	 * Write the opened stage to a target file.
 	 * @param stageFile A File object representing the stage file to be written to. 
@@ -258,7 +262,7 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 			isEntityDragging = false;
 			for(Entity en : selectedEntities){
 				en.shapes.translate(new Vector2d(gameMouseDragStartLoc, gameMouseLoc));
-				//TODO: handle change to entity string
+				stage.entityCodeMap.put(en, MapCoder.encodeEntity(en, stage));
 			}
 		}
 		

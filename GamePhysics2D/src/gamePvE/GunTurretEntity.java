@@ -19,8 +19,6 @@ public class GunTurretEntity extends Entity {
 	
 	private LineOfSightEntity los;
 	
-	private ShapeGroup turret;
-	
 	private int gunCDTimer;
 	private int gunCD;
 	
@@ -29,12 +27,10 @@ public class GunTurretEntity extends Entity {
 	
 	private EntityAdder adder;
 	
-	public GunTurretEntity(ShapeGroup shapes, ShapeGroup turret,
-			               double turningSpeed, int gunCD, EntityAdder adder) {
+	public GunTurretEntity(ShapeGroup shapes, double turningSpeed, int gunCD, EntityAdder adder) {
 		super(shapes, "gunturret");
 		addTag("solidimmovable");
 		facing = 0;
-		this.turret = turret;
 		this.turningSpeed = turningSpeed;
 		this.gunCD = gunCD;
 		gunCDTimer = -1;
@@ -42,21 +38,17 @@ public class GunTurretEntity extends Entity {
 	}
 	
 	public GunTurretEntity(double xLoc, double yLoc, double initialFacing, EntityAdder adder){
-		this(generateDefaultShapes(xLoc, yLoc), null,
-			 GameRunner.TURRET_TURN_SPEED, GameRunner.TURRET_GUN_CD, adder);
-		turret = generateDefaultTurret(xLoc, yLoc);
+		this(generateDefaultShapes(xLoc, yLoc), GameRunner.TURRET_TURN_SPEED, GameRunner.TURRET_GUN_CD, adder);
 		setTurretRotation(initialFacing);
 	}
 	
 	private static ShapeGroup generateDefaultShapes(double xLoc, double yLoc){
-		return new ShapeGroup(new BoundingCircle(xLoc, yLoc, 20), GameRunner.ENEMY_COLOR);
-	}
-	
-	private static ShapeGroup generateDefaultTurret(double xLoc, double yLoc){
+		ShapeGroup result = new ShapeGroup(new BoundingCircle(xLoc, yLoc, 20), GameRunner.ENEMY_COLOR);
 		double xp[] = {15,-5,-5,-15,-15,-5,-5,15};
 		double yp[] = {3,7,10,10,-10,-10,-7,-3};
 		int np = 8;
-		return new ShapeGroup(new BoundingRotatingPolygon(xLoc, yLoc, np, xp, yp), Color.black);
+		result.add(new BoundingRotatingPolygon(xLoc, yLoc, np, xp, yp), Color.black);
+		return result;
 	}
 	
 	public void setLOS(LineOfSightEntity los){
@@ -68,12 +60,12 @@ public class GunTurretEntity extends Entity {
 	}
 	
 	private void rotateTurret(double delta){
-		turret.rotate(delta);
+		shapes.rotate(delta);
 		facing += delta;
 	}
 	
 	private void setTurretRotation(double angle){
-		turret.setAngle(angle);
+		shapes.setAngle(angle);
 		facing = angle;
 	}
 
@@ -118,29 +110,19 @@ public class GunTurretEntity extends Entity {
 	
 	@Override
 	public void postStep() {}
-	
-	@Override
-	public void paintEntity(Graphics2D g2d, double xoffset, double yoffset, double scale){
-		super.paintEntity(g2d, xoffset, yoffset, scale);
-		turret.paintShapes(g2d, xoffset, yoffset, scale);
-	}
-
 }
 
 class GunTurretProjectileEntity extends DynamicEntity {
-	
-	private Color color;
 	
 	private double damage;
 	private double knockback;
 	
 	private EntityAdder adder;
 	
-	public GunTurretProjectileEntity(ShapeGroup shapes, Color color, double projSpeed, double projDirection,
+	public GunTurretProjectileEntity(ShapeGroup shapes, double projSpeed, double projDirection,
 			                         double projDamage, double projKnockback, EntityAdder adder){
 		super(shapes, "gunturretproj");
 		addTag("projectile");
-		this.color = color;
 		this.damage = projDamage;
 		this.knockback = projKnockback;
 		this.velocity = new Vector2d();
@@ -150,7 +132,7 @@ class GunTurretProjectileEntity extends DynamicEntity {
 	
 	public GunTurretProjectileEntity(double startx, double starty,
 			                         double projSpeed, double projDirection, EntityAdder adder){
-		this(generateDefaultShapes(startx, starty), GameRunner.ENEMY_SHOT_COLOR, projSpeed, projDirection,
+		this(generateDefaultShapes(startx, starty), projSpeed, projDirection,
 		     GameRunner.TURRET_SHOT_DAMAGE, GameRunner.TURRET_SHOT_KNOCKBACK, adder);
 	}
 	

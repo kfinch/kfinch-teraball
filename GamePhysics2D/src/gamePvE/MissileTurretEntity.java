@@ -20,8 +20,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MissileTurretEntity extends Entity{
-
-	private ShapeGroup detail;
 	
 	private LineOfSightEntity los;
 	
@@ -41,18 +39,15 @@ public class MissileTurretEntity extends Entity{
 	
 	public MissileTurretEntity(double xLoc, double yLoc, EntityAdder adder){
 		this(generateDefaultShapes(xLoc, yLoc), null, GameRunner.TURRET_MISSILE_CD, adder);
-		detail = generateDefaultDetail(xLoc, yLoc);
 	}
 	
 	private static ShapeGroup generateDefaultShapes(double xLoc, double yLoc){
-		return new ShapeGroup(new BoundingCircle(xLoc, yLoc, 20), GameRunner.ENEMY_COLOR);
-	}
-	
-	private static ShapeGroup generateDefaultDetail(double xLoc, double yLoc){
+		ShapeGroup result = new ShapeGroup(new BoundingCircle(xLoc, yLoc, 20), GameRunner.ENEMY_COLOR);
 		double xp[] = {0,5,15,5,0,-5,-15,-5};
 		double yp[] = {15,5,0,-5,-15,-5,0,5};
 		int np = 8;
-		return new ShapeGroup(new BoundingPolygon(xLoc, yLoc, np, xp, yp), Color.black);
+		result.add(new BoundingPolygon(xLoc, yLoc, np, xp, yp), Color.black);
+		return result;
 	}
 	
 	public void setLOS(LineOfSightEntity los){
@@ -85,12 +80,6 @@ public class MissileTurretEntity extends Entity{
 
 	@Override
 	public void postStep() {}
-	
-	@Override
-	public void paintEntity(Graphics2D g2d, double xoffset, double yoffset, double scale){
-		super.paintEntity(g2d, xoffset, yoffset, scale);
-		detail.paintShapes(g2d, xoffset, yoffset, scale);
-	}
 }
 
 class MissileEntity extends DynamicEntity {

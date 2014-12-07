@@ -35,7 +35,11 @@ public class MapCoder {
 
 	public static StageInfo decodeMapFile(File fileName, GameRunner game) throws FileNotFoundException{
 		Scanner sc = new Scanner(fileName);
+		
+		//inits empty stage
 		StageInfo stage = new StageInfo();
+		
+		//reads in relevant data
 		while(sc.hasNext()){
 			String category = sc.next();
 			if(category.equals("CONSTANTS"))
@@ -51,6 +55,11 @@ public class MapCoder {
 			else
 				throw new IllegalArgumentException("Unrecognized category: " + category);
 		}
+		
+		//checks to make sure bare minimum was read in
+		if(stage.player == null || stage.stageHeight == 0 || stage.stageWidth == 0)
+			throw new IllegalArgumentException("Player start or stage size was left undefined.");
+		
 		return stage;
 	}
 	
@@ -146,7 +155,9 @@ public class MapCoder {
 			do{
 				entityString = sc.nextLine();
 			}while(entityString.equals(""));
-			entityCodeMap.put(decodeEntity(entityString, game, linkableEntityIDs), entityString);
+			Entity e = decodeEntity(entityString, game, linkableEntityIDs);
+			if(e != null)
+				entityCodeMap.put(e, entityString);
 		}while(!entityString.startsWith("END"));
 		
 		stage.linkableEntityIDs = linkableEntityIDs;
@@ -442,6 +453,8 @@ public class MapCoder {
 		encodePlayerStart(writer, stage);
 		encodeEntities(writer, stage);
 		encodeNextStage(writer, stage);
+		
+		writer.close();
 	}
 	
 	private static void encodeConstants(PrintWriter writer, StageInfo stage){
@@ -485,16 +498,16 @@ public class MapCoder {
 	 */
 	public static String encodeEntity(Entity e, StageInfo stage){
 		if(e instanceof TerrainEntity){
-			return "terrain " + encodeShapes(e.shapes) + "\n";
+			return "terrain " + encodeShapes(e.shapes);
 		}
 		else if(e instanceof MineEntity){
-			return "mine " + e.shapes.xLoc + " " + e.shapes.yLoc + "\n";
+			return "mine " + e.shapes.xLoc + " " + e.shapes.yLoc;
 		}
 		else if(e instanceof PatrollingMineEntity){
 			PatrollingMineEntity pme = (PatrollingMineEntity)e;
 			String result = "patrollingmine " + pme.nWaypoints + " ";
 			for(int i=0; i<pme.nWaypoints; i++)
-				result += pme.xWaypoints[i] + " " + pme.yWaypoints[i] + "\n";
+				result += pme.xWaypoints[i] + " " + pme.yWaypoints[i];
 			return result;
 		}
 		else if(e instanceof GunTurretEntity){
@@ -502,20 +515,20 @@ public class MapCoder {
 			return "gunturret " + gte.shapes.xLoc + " " + gte.shapes.yLoc + " " + (gte.getFacing() / Math.PI) + "\n";
 		}
 		else if(e instanceof MissileTurretEntity){
-			return "missileturret " + e.shapes.xLoc + " " + e.shapes.yLoc + "\n";
+			return "missileturret " + e.shapes.xLoc + " " + e.shapes.yLoc;
 		}
 		else if(e instanceof CoinEntity){
 			CoinEntity ce = (CoinEntity)e;
 			return "customcoin " + ce.shapes.xLoc + " " + ce.shapes.yLoc + " " +
-					ce.shapes.xBound + " " + ce.getValue() + "\n";
+					ce.shapes.xBound + " " + ce.getValue();
 		}
 		else if(e instanceof LevelExitEntity){
-			return "exit " + e.shapes.xLoc + " " + e.shapes.yLoc + "\n";
+			return "exit " + e.shapes.xLoc + " " + e.shapes.yLoc;
 		}
 		else if(e instanceof KeyedLevelExitEntity){
 			KeyedLevelExitEntity klee = (KeyedLevelExitEntity)e;
 			return "keyedexit " + stage.linkableEntityIDs.getA(e) + " " + e.shapes.xLoc + " " + e.shapes.yLoc +
-					" " + klee.getMaxKeys() + "\n";
+					" " + klee.getMaxKeys();
 		}
 		else if(e instanceof KeyEntity){
 			KeyEntity ke = (KeyEntity)e;
@@ -523,13 +536,13 @@ public class MapCoder {
 					        " " + e.shapes.xLoc + " " + e.shapes.yLoc + " ";
 			
 			if(ke.color.equals(GameRunner.VIOLET_KEY_COLOR))
-				result += "violet\n";
+				result += "violet";
 			else if(ke.color.equals(GameRunner.INDIGO_KEY_COLOR))
-				result += "indigo\n";
+				result += "indigo";
 			else if(ke.color.equals(GameRunner.BLUE_KEY_COLOR))
-				result += "blue\n";
+				result += "blue";
 			else if(ke.color.equals(GameRunner.GREEN_KEY_COLOR))
-				result += "green\n";
+				result += "green";
 			else
 				throw new IllegalArgumentException("Unrecognized key color: " + ke.color);
 			
@@ -554,12 +567,12 @@ public class MapCoder {
 			else
 				result += "f ";
 			
-			result += encodeShapes(e.shapes) + "\n";
+			result += encodeShapes(e.shapes);
 			return result;
 		}
 		else if(e instanceof WireEntity){
 			WireEntity we = (WireEntity)e;
-			String result = "gate " + stage.linkableEntityIDs.getA(e) + " ";
+			String result = "wire " + stage.linkableEntityIDs.getA(e) + " ";
 			
 			int mode = we.getMode();
 			if(mode == TogglableEntity.AND_MODE)
@@ -576,7 +589,7 @@ public class MapCoder {
 			else
 				result += "f ";
 			
-			result += encodeShapes(e.shapes) + "\n";
+			result += encodeShapes(e.shapes);
 			return result;
 		}
 		else if(e instanceof ButtonEntity){
@@ -586,18 +599,18 @@ public class MapCoder {
 			
 			int mode = be.getMode();
 			if(mode == ButtonEntity.TOGGLE_MODE)
-				result += "toggle\n";
+				result += "toggle";
 			else if(mode == ButtonEntity.HOLD_MODE)
-				result += "hold\n";
+				result += "hold";
 			else if(mode == ButtonEntity.ONE_PRESS_MODE)
-				result += "onepress\n";
+				result += "onepress";
 			else
 				throw new IllegalArgumentException("Unrecognized button mode: " + mode);
 			
 			return result;
 		}
 		else if(e instanceof FuelPickupEntity){
-			return "fuelpickup " + e.shapes.xLoc + " " + e.shapes.yLoc + "\n";
+			return "fuelpickup " + e.shapes.xLoc + " " + e.shapes.yLoc;
 		}
 		else{
 			throw new IllegalArgumentException("Unrecognized Entity type: " + e.getClass());

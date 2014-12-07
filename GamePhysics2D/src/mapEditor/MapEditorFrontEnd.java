@@ -161,6 +161,9 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
 		else if(e.getActionCommand().equals(OPEN_MAP_STRING)){
 			editor.openStageFile(new File("mapeditortest.tbstage")); //TODO: testing
 		}
+		else if(e.getActionCommand().equals(SAVE_MAP_STRING)){
+			editor.saveStageFile();
+		}
 	}
 
 	public static void main(String[] args) {
