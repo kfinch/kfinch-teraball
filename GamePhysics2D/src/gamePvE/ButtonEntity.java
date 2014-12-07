@@ -41,6 +41,10 @@ public class ButtonEntity extends Entity {
 	private static ShapeGroup generateDefaultShapes(double xLoc, double yLoc){
 		return new ShapeGroup(new BoundingCircle(xLoc, yLoc, GameRunner.BUTTON_SIZE));
 	}
+	
+	public int getMode(){
+		return mode;
+	}
 
 	@Override
 	public void preStep() {}

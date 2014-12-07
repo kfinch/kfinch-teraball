@@ -200,7 +200,7 @@ public class GameRunner implements ActionListener, KeyListener, MouseListener, M
 			MapCoder.decodeMapFile(stageFile, this); //read map file to load new entities
 			currentStage = stageFile;
 		} catch (FileNotFoundException e) {
-			System.out.println("file not found!");
+			System.out.println("File not found: " + stageFile);
 		}
 	}
 	
@@ -261,6 +261,7 @@ public class GameRunner implements ActionListener, KeyListener, MouseListener, M
 	 * Moves the simulation one step forward. This is automatically called by the game clock.
 	 */
 	private void step(){
+		//display pause messages
 		while(!pauseMessageQueue.isEmpty()){
 			PauseMessageInfo current = pauseMessageQueue.peek();
 			
@@ -304,13 +305,21 @@ public class GameRunner implements ActionListener, KeyListener, MouseListener, M
 		//step the entity simulation
 		entitySim.step();
 		
+		//TODO: remove debugging
+		//System.out.println("Player location: " + playerEntity.shapes.xLoc + "," + playerEntity.shapes.yLoc);
+		//System.out.println("Player speed: " + playerEntity.velocity.x + "," + playerEntity.velocity.y);
+		//System.out.println("Player health: " + playerEntity.currHealth + " / " + playerEntity.maxHealth);
+		
 		//order the display to update and refresh
 		display.repaint();
 		
-		if(playerEntity.currHealth <= 0) //player lose
+		//check for player loss (due to running out of health)
+		if(playerEntity.currHealth <= 0){
 			restartStage();
+		}
 		
-		if(playerEntity.exited){ //player win
+		//check for player win (due to reaching the exit)
+		if(playerEntity.exited){
 			if(nextStage == null)
 				quitToMenu();
 			else

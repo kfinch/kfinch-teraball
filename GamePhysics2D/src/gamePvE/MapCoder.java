@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 import mapEditor.MapEditorRunner;
 import mapEditor.StageInfo;
+import misc.BiHashMap;
 import gamePhysics2D.BoundingAABox;
 import gamePhysics2D.BoundingCircle;
 import gamePhysics2D.BoundingPolygon;
@@ -137,7 +138,7 @@ public class MapCoder {
 	 * fuelpickup [xloc] [yloc]
 	 */
 	private static void decodeEntities(Scanner sc, StageInfo stage, GameRunner game){
-		Map<String, Entity> linkableEntities = new HashMap<String, Entity>();
+		BiHashMap<String, Entity> linkableEntityIDs = new BiHashMap<String, Entity>();
 		Map<Entity, String> entityCodeMap = new HashMap<Entity, String>();
 		
 		String entityString;
@@ -145,13 +146,14 @@ public class MapCoder {
 			do{
 				entityString = sc.nextLine();
 			}while(entityString.equals(""));
-			entityCodeMap.put(decodeEntity(entityString, game, linkableEntities), entityString);
+			entityCodeMap.put(decodeEntity(entityString, game, linkableEntityIDs), entityString);
 		}while(!entityString.startsWith("END"));
 		
+		stage.linkableEntityIDs = linkableEntityIDs;
 		stage.entityCodeMap = entityCodeMap;
 	}
 	
-	private static Entity decodeEntity(String line, GameRunner game, Map<String,Entity> linkableEntities){
+	private static Entity decodeEntity(String line, GameRunner game, BiHashMap<String,Entity> linkableEntities){
 		Scanner sc = new Scanner(line);
 		String type = sc.next();
 		if(type.equals("END")){
@@ -327,8 +329,8 @@ public class MapCoder {
 		else if(type.equals("link")){
 			String id1 = sc.next();
 			String id2 = sc.next();
-			Entity e1 = linkableEntities.get(id1);
-			Entity e2 = linkableEntities.get(id2);
+			Entity e1 = linkableEntities.getB(id1);
+			Entity e2 = linkableEntities.getB(id2);
 			if(e1 instanceof ButtonEntity && e2 instanceof TogglableEntity){
 				((TogglableEntity)e2).addButton((ButtonEntity)e1);
 			}
@@ -512,12 +514,12 @@ public class MapCoder {
 		}
 		else if(e instanceof KeyedLevelExitEntity){
 			KeyedLevelExitEntity klee = (KeyedLevelExitEntity)e;
-			return "keyedexit " + stage.linkableEntityIDs.get(e) + " " + e.shapes.xLoc + " " + e.shapes.yLoc +
+			return "keyedexit " + stage.linkableEntityIDs.getA(e) + " " + e.shapes.xLoc + " " + e.shapes.yLoc +
 					" " + klee.getMaxKeys() + "\n";
 		}
 		else if(e instanceof KeyEntity){
 			KeyEntity ke = (KeyEntity)e;
-			String result = "exitkey " + stage.linkableEntityIDs.get(e) +
+			String result = "exitkey " + stage.linkableEntityIDs.getA(e) +
 					        " " + e.shapes.xLoc + " " + e.shapes.yLoc + " ";
 			
 			if(ke.color.equals(GameRunner.VIOLET_KEY_COLOR))
@@ -535,7 +537,7 @@ public class MapCoder {
 		}
 		else if(e instanceof GateEntity){
 			GateEntity ge = (GateEntity)e;
-			String result = "gate " + stage.linkableEntityIDs.get(e) + " ";
+			String result = "gate " + stage.linkableEntityIDs.getA(e) + " ";
 			
 			int mode = ge.getMode();
 			if(mode == TogglableEntity.AND_MODE)
@@ -557,9 +559,9 @@ public class MapCoder {
 		}
 		else if(e instanceof WireEntity){
 			WireEntity we = (WireEntity)e;
-			String result = "gate " + stage.linkableEntityIDs.get(e) + " ";
+			String result = "gate " + stage.linkableEntityIDs.getA(e) + " ";
 			
-			int mode = ge.getMode();
+			int mode = we.getMode();
 			if(mode == TogglableEntity.AND_MODE)
 				result += "and ";
 			else if(mode == TogglableEntity.OR_MODE)
@@ -567,15 +569,35 @@ public class MapCoder {
 			else if(mode == TogglableEntity.XOR_MODE)
 				result += "xor ";
 			else
-				throw new IllegalArgumentException("Unrecognized gate mode: " + mode);
+				throw new IllegalArgumentException("Unrecognized wire mode: " + mode);
 			
-			if(ge.isInverted())
+			if(we.isInverted())
 				result += "t ";
 			else
 				result += "f ";
 			
 			result += encodeShapes(e.shapes) + "\n";
 			return result;
+		}
+		else if(e instanceof ButtonEntity){
+			ButtonEntity be = (ButtonEntity)e;
+			String result = "button " + stage.linkableEntityIDs.getA(e) +
+					        " " + be.shapes.xLoc + " " + be.shapes.yLoc + " ";
+			
+			int mode = be.getMode();
+			if(mode == ButtonEntity.TOGGLE_MODE)
+				result += "toggle\n";
+			else if(mode == ButtonEntity.HOLD_MODE)
+				result += "hold\n";
+			else if(mode == ButtonEntity.ONE_PRESS_MODE)
+				result += "onepress\n";
+			else
+				throw new IllegalArgumentException("Unrecognized button mode: " + mode);
+			
+			return result;
+		}
+		else if(e instanceof FuelPickupEntity){
+			return "fuelpickup " + e.shapes.xLoc + " " + e.shapes.yLoc + "\n";
 		}
 		else{
 			throw new IllegalArgumentException("Unrecognized Entity type: " + e.getClass());

@@ -1,6 +1,5 @@
 package gamePhysics2D;
 
-import java.util.List;
 import java.util.Set;
 
 public abstract class PhysicsEntity extends DynamicEntity {

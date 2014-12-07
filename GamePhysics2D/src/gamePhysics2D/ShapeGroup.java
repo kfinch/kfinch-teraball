@@ -155,17 +155,26 @@ public class ShapeGroup {
 		}
 	}
 	
+	/**
+	 * Checks for collision with another ShapeGroup, and returns a resolution vector if needed.
+	 * @param sg The ShapeGroup to check for collision with
+	 * @return A resolution vector for the collision of this ShapeGroup with sg, or null if they do not collide.
+	 */
 	public Vector2d resolveCollision(ShapeGroup sg){
-		if(Math.abs(xLoc - sg.xLoc) > xBound + sg.xBound && Math.abs(yLoc - sg.yLoc) > yBound + sg.yBound)
+		if(Math.abs(xLoc - sg.xLoc) > xBound + sg.xBound || Math.abs(yLoc - sg.yLoc) > yBound + sg.yBound)
 			return null;
 		
 		Vector2d part, total;
 		boolean hit = false;
 		total = new Vector2d(0,0);
 		for(BoundingShape shape1 : shapes){
-			for(BoundingShape shape2 : shapes){
+			for(BoundingShape shape2 : sg.shapes){
 				part = shape1.resolveCollision(shape2);
 				if(part != null){
+					//System.out.println("Collision between object @ " + shape1.xLoc + "," + shape1.yLoc +
+					//		           " [" + shape1.xBound + "," + shape1.yBound + "] <--> " +
+					//		           shape2.xLoc + "," + shape2.yLoc + " [" + shape2.xBound + "," +
+					//		           shape2.yBound + "]");
 					hit = true;
 					total.add(part);
 					translate(part);

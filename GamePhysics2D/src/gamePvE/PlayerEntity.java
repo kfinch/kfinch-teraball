@@ -253,8 +253,16 @@ public class PlayerEntity extends PhysicsEntity {
 	
 	@Override
 	public void resolveCollision(Entity e, Vector2d cv){
-		if(e.hasTag("activeexit"))
+		//System.out.println("player collided with object..."); //TODO: remove debugging
+		//System.out.println("I'm @ " + shapes.xLoc + "," + shapes.yLoc +
+		//		           " (" + shapes.xBound + "x" + shapes.yBound + ")");
+		//System.out.println("Object @ " + e.shapes.xLoc + "," + e.shapes.yLoc +
+		//                   " (" + e.shapes.xBound + "x" + e.shapes.yBound + ")");
+		//System.out.println("Collision vector = " + cv.x + "," + cv.y);
+		
+		if(e.hasTag("activeexit")){
 			exited = true;
+		}
 		if(e.hasTag("solidimmovable")){
 			super.resolveCollisionWithImmovable(e, cv);
 		}
