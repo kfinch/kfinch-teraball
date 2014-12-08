@@ -4,6 +4,8 @@ import gamePhysics2D.Entity;
 import gamePvE.PlayerEntity;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,15 +42,10 @@ public class StageInfo {
 	}
 	
 	//initializing an "empty" StageInfo is fine
-	public StageInfo(){}
-	
-}
-
-class EntityLink {
-	protected String e1, e2;
-	
-	public EntityLink(String e1, String e2){
-		this.e1 = e1;
-		this.e2 = e2;
+	public StageInfo(){
+		entityCodeMap = new HashMap<Entity, String>();
+		linkableEntityIDs = new BiHashMap<String, Entity>();
+		entityLinks = new ArrayList<EntityLink>();
 	}
+	
 }
