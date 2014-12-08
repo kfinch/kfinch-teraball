@@ -4,13 +4,12 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import mapEditor.MapEditorRunner;
+import mapEditor.EntityLink;
 import mapEditor.StageInfo;
 import misc.BiHashMap;
 import gamePhysics2D.BoundingAABox;
@@ -18,7 +17,6 @@ import gamePhysics2D.BoundingCircle;
 import gamePhysics2D.BoundingPolygon;
 import gamePhysics2D.BoundingShape;
 import gamePhysics2D.Entity;
-import gamePhysics2D.EntitySimulator;
 import gamePhysics2D.ShapeGroup;
 
 /**
@@ -147,7 +145,6 @@ public class MapCoder {
 	 * fuelpickup [xloc] [yloc]
 	 */
 	private static void decodeEntities(Scanner sc, StageInfo stage, GameRunner game){
-		BiHashMap<String, Entity> linkableEntityIDs = new BiHashMap<String, Entity>();
 		Map<Entity, String> entityCodeMap = new HashMap<Entity, String>();
 		
 		String entityString;
@@ -155,16 +152,15 @@ public class MapCoder {
 			do{
 				entityString = sc.nextLine();
 			}while(entityString.equals(""));
-			Entity e = decodeEntity(entityString, game, linkableEntityIDs);
+			Entity e = decodeEntity(entityString, game, stage);
 			if(e != null)
 				entityCodeMap.put(e, entityString);
 		}while(!entityString.startsWith("END"));
 		
-		stage.linkableEntityIDs = linkableEntityIDs;
 		stage.entityCodeMap = entityCodeMap;
 	}
 	
-	private static Entity decodeEntity(String line, GameRunner game, BiHashMap<String,Entity> linkableEntities){
+	private static Entity decodeEntity(String line, GameRunner game, StageInfo stage){
 		Scanner sc = new Scanner(line);
 		String type = sc.next();
 		if(type.equals("END")){
@@ -238,7 +234,7 @@ public class MapCoder {
 			double yLoc = sc.nextDouble();
 			int numKeys = sc.nextInt();
 			KeyedLevelExitEntity keyedExit = new KeyedLevelExitEntity(xLoc, yLoc, numKeys);
-			linkableEntities.put(id, keyedExit);
+			stage.linkableEntityIDs.put(id, keyedExit);
 			game.getSim().addEntity(keyedExit, "playeritems");
 			return keyedExit;
 		}
@@ -259,7 +255,7 @@ public class MapCoder {
 			else
 				throw new IllegalArgumentException("Unrecognized color: " + colorString);
 			Entity e = new KeyEntity(xLoc, yLoc, color);
-			linkableEntities.put(id, e);
+			stage.linkableEntityIDs.put(id, e);
 			game.getSim().addEntity(e, "playeritems");
 			return e;
 		}
@@ -284,7 +280,7 @@ public class MapCoder {
 			}
 			
 			ButtonEntity button = new ButtonEntity(xLoc, yLoc, modeCode);
-			linkableEntities.put(id, button);
+			stage.linkableEntityIDs.put(id, button);
 			game.getSim().addEntity(button, "playeritems");
 			return button;
 		}
@@ -309,7 +305,7 @@ public class MapCoder {
 			boolean invert = decodeBoolean(sc);
 			
 			GateEntity gate = new GateEntity(decodeShapeGroup(sc), modeCode, invert);
-			linkableEntities.put(id, gate);
+			stage.linkableEntityIDs.put(id, gate);
 			game.getSim().addEntity(gate, "terrain");
 			return gate;
 		}
@@ -333,15 +329,16 @@ public class MapCoder {
 			
 			boolean invert = decodeBoolean(sc);
 			WireEntity wire = new WireEntity(decodeShapeGroup(sc), modeCode, invert);
-			linkableEntities.put(id, wire);
+			stage.linkableEntityIDs.put(id, wire);
 			game.getSim().addEntity(wire, "nocollide");
 			return wire;
 		}
 		else if(type.equals("link")){
 			String id1 = sc.next();
 			String id2 = sc.next();
-			Entity e1 = linkableEntities.getB(id1);
-			Entity e2 = linkableEntities.getB(id2);
+			Entity e1 = stage.linkableEntityIDs.getB(id1);
+			Entity e2 = stage.linkableEntityIDs.getB(id2);
+			stage.entityLinks.add(new EntityLink(id1, id2));
 			if(e1 instanceof ButtonEntity && e2 instanceof TogglableEntity){
 				((TogglableEntity)e2).addButton((ButtonEntity)e1);
 			}
@@ -477,6 +474,9 @@ public class MapCoder {
 		writer.println("ENTITIES");
 		for(String e : stage.entityCodeMap.values()){
 			writer.println(e);
+		}
+		for(EntityLink link : stage.entityLinks){
+			writer.println("link " + link.e1 + " " + link.e2);
 		}
 		writer.println("END");
 	}
