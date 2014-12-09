@@ -33,6 +33,7 @@ public class KeyedLevelExitEntity extends Entity {
 	 */
 	public KeyedLevelExitEntity(double xLoc, double yLoc, int numKeys){
 		this(generateDefaultShapes(xLoc, yLoc), numKeys, new KeyEntity[numKeys], new ShapeGroup[numKeys]);
+		
 		switch(numKeys){
 		case 1 : 
 			keyHoles[0] = generateDefaultKeyShapes(xLoc, yLoc, Color.white);
@@ -55,6 +56,9 @@ public class KeyedLevelExitEntity extends Entity {
 		default :
 			throw new IllegalArgumentException("Illegal number of key holes: " + numKeys);
 		}
+		
+		for(int i=0; i<numKeys; i++)
+			shapes.merge(keyHoles[i]);
 	}
 
 	private static ShapeGroup generateDefaultShapes(double xLoc, double yLoc){
@@ -111,12 +115,11 @@ public class KeyedLevelExitEntity extends Entity {
 
 	@Override
 	public void paintEntity(Graphics2D g2d, double xoffset, double yoffset, double scale){
-		super.paintEntity(g2d, xoffset, yoffset, scale);
 		for(int i=0; i<maxKeys; i++){
 			if(!keys[i].isActive) //this is sloppy way to handle color change, also inefficient. TODO: do it better!
 				keyHoles[i].setColor(keys[i].color);
-			keyHoles[i].paintShapes(g2d, xoffset, yoffset, scale);
 		}
+		super.paintEntity(g2d, xoffset, yoffset, scale);
 	}
 	
 }
