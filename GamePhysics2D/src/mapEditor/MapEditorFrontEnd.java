@@ -1,5 +1,6 @@
 package mapEditor;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -10,6 +11,7 @@ import gamePvE.TeraBallFrontEnd;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -17,6 +19,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
@@ -35,6 +38,8 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
 	
 	private MapEditorRunner editor;
 	private MapEditorPanel editorPanel;
+	
+	private JToolBar toolBar;
 	
 	private JFileChooser fileChooser;
 	
@@ -63,6 +68,10 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
 		
 		//initialize menu bar
 		this.setJMenuBar(createMenuBar());
+		
+		//initialize tool bar
+		createToolBar();
+		add(toolBar, BorderLayout.SOUTH);
 	}
 	
 	private JMenuBar createMenuBar(){
@@ -158,6 +167,30 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
         */
         
         return menuBar;
+	}
+	
+	private void createToolBar(){
+		toolBar = new JToolBar();
+		
+		JButton button;
+		
+		button = new JButton("Beep");
+	    button.setActionCommand("BEEP");
+	    button.setToolTipText("Makes a beep");
+	    button.addActionListener(this);
+	    toolBar.add(button);
+	    
+	    button = new JButton("Boop");
+	    button.setActionCommand("BOOP");
+	    button.setToolTipText("Makes a boop");
+	    button.addActionListener(this);
+	    toolBar.add(button);
+	    
+	    button = new JButton("Blop");
+	    button.setActionCommand("BLOP");
+	    button.setToolTipText("Makes a blop");
+	    button.addActionListener(this);
+	    toolBar.add(button);
 	}
 	
 	@Override
