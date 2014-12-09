@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 import mapEditor.EntityLink;
 import mapEditor.StageInfo;
-import misc.BiHashMap;
 import gamePhysics2D.BoundingAABox;
 import gamePhysics2D.BoundingCircle;
 import gamePhysics2D.BoundingPolygon;
