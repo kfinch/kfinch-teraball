@@ -249,6 +249,21 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 			display.cornerX += (prevMouseLoc.x - mouseLoc.x) / display.zoom;
 			display.cornerY += (prevMouseLoc.y - mouseLoc.y) / display.zoom;
 		}
+		if(userState == DRAGGING_ENTITIES){
+			//constrain to axis
+			if(e.isShiftDown()){
+				double xDiff = Math.abs(gameMouseLoc.x - gameMouseDragStartLoc.x);
+				double yDiff = Math.abs(gameMouseLoc.y - gameMouseDragStartLoc.y);
+				if(xDiff > yDiff){
+					mouseLoc.y = mouseDragStartLoc.y;
+					gameMouseLoc.y = gameMouseDragStartLoc.y;
+				}
+				else{
+					mouseLoc.x = mouseDragStartLoc.x;
+					gameMouseLoc.x = gameMouseDragStartLoc.x;
+				}
+			}
+		}
 		
 		display.repaint();
 	}
@@ -324,6 +339,19 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 			}
 			else if(userState == DRAGGING_ENTITIES){
 				userState = MANIPULATOR_TOOL;
+				//constrain to axis
+				if(e.isShiftDown()){
+					double xDiff = Math.abs(gameMouseLoc.x - gameMouseDragStartLoc.x);
+					double yDiff = Math.abs(gameMouseLoc.y - gameMouseDragStartLoc.y);
+					if(xDiff > yDiff){
+						mouseLoc.y = mouseDragStartLoc.y;
+						gameMouseLoc.y = gameMouseDragStartLoc.y;
+					}
+					else{
+						mouseLoc.x = mouseDragStartLoc.x;
+						gameMouseLoc.x = gameMouseDragStartLoc.x;
+					}
+				}
 				for(Entity en : selectedEntities){
 					en.shapes.translate(new Vector2d(gameMouseDragStartLoc, gameMouseLoc));
 					stage.entityCodeMap.put(en, MapCoder.encodeEntity(en, stage));
