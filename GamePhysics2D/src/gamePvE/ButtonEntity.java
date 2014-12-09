@@ -49,6 +49,14 @@ public class ButtonEntity extends Entity {
 	}
 
 	@Override
+	public void link(Entity e){
+		if(e instanceof TogglableEntity)
+			e.link(this);
+		else
+			super.link(e);
+	}
+	
+	@Override
 	public void preStep() {}
 
 	@Override

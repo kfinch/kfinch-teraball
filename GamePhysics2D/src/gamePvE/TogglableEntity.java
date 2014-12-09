@@ -82,6 +82,14 @@ public abstract class TogglableEntity extends Entity {
 	}
 	
 	@Override
+	public void link(Entity e){
+		if(e instanceof ButtonEntity)
+			addButton((ButtonEntity) e);
+		else
+			super.link(e);
+	}
+	
+	@Override
 	public void preStep(){
 		updateState();
 	}

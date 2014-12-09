@@ -94,6 +94,14 @@ public class KeyedLevelExitEntity extends Entity {
 	}
 	
 	@Override
+	public void link(Entity e){
+		if(e instanceof KeyEntity)
+			addKey((KeyEntity)e);
+		else
+			super.link(e);
+	}
+	
+	@Override
 	public void preStep() {}
 
 	@Override
@@ -139,6 +147,14 @@ class KeyEntity extends Entity {
 		this(KeyedLevelExitEntity.generateDefaultKeyShapes(xLoc, yLoc, color), color);
 	}
 
+	@Override
+	public void link(Entity e){
+		if(e instanceof KeyedLevelExitEntity)
+			e.link(this);
+		else
+			super.link(e);
+	}
+	
 	@Override
 	public void preStep() {}
 

@@ -48,6 +48,11 @@ public abstract class Entity implements Serializable {
 		return tags.contains(tag);
 	}
 	
+	public void link(Entity e){
+		throw new IllegalArgumentException("These entity types cannot be linked: " +
+	                                       this.getClass() + " " + e.getClass());
+	}
+	
 	public abstract void preStep();
 	
 	public abstract void moveStep();
