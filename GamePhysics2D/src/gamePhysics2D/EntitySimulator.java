@@ -249,7 +249,6 @@ public class EntitySimulator implements Serializable, Iterable<Entity> {
 
 class EntitySimulatorIterator implements Iterator<Entity> {
 
-	private EntitySimulator sim;
 	private Iterator<List<Entity>> listIterator;
 	private Iterator<Entity> entityIterator;
 	
@@ -257,7 +256,6 @@ class EntitySimulatorIterator implements Iterator<Entity> {
 	private boolean done;
 	
 	public EntitySimulatorIterator(EntitySimulator sim){
-		this.sim = sim;
 		listIterator = sim.entityLists.iterator();
 		if(listIterator.hasNext()){
 			entityIterator = listIterator.next().iterator();
