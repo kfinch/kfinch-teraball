@@ -4,6 +4,7 @@ import gamePhysics2D.Entity;
 import gamePvE.PlayerEntity;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,9 @@ import misc.BiHashMap;
  * 
  * @author Kelton Finch
  */
-public class StageInfo {
+public class StageInfo implements Serializable {
+	
+	private static final long serialVersionUID = -3634753086545278322L;
 	
 	public double stageWidth, stageHeight; //the stages bounds
 	public PlayerEntity player; //the player entity

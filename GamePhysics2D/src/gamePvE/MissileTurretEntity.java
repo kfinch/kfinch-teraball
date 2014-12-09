@@ -3,9 +3,7 @@ package gamePvE;
 import gamePhysics2D.BoundingCircle;
 import gamePhysics2D.BoundingPolygon;
 import gamePhysics2D.BoundingRotatingPolygon;
-import gamePhysics2D.BoundingShape;
 import gamePhysics2D.EntityAdder;
-import gamePhysics2D.EntitySimulator;
 import gamePhysics2D.DynamicEntity;
 import gamePhysics2D.Entity;
 import gamePhysics2D.Point2d;
@@ -15,9 +13,7 @@ import gamePhysics2D.Vector2d;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 public class MissileTurretEntity extends Entity{
 	

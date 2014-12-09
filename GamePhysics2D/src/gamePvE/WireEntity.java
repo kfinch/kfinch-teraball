@@ -5,7 +5,6 @@ import gamePhysics2D.ShapeGroup;
 import gamePhysics2D.Vector2d;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 
 public class WireEntity extends TogglableEntity {
 	private Color offColor;

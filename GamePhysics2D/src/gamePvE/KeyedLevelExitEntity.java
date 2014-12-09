@@ -1,10 +1,8 @@
 package gamePvE;
 
-import gamePhysics2D.BoundingCircle;
 import gamePhysics2D.BoundingPolygon;
 import gamePhysics2D.BoundingShape;
 import gamePhysics2D.Entity;
-import gamePhysics2D.Point2d;
 import gamePhysics2D.ShapeGroup;
 import gamePhysics2D.Vector2d;
 

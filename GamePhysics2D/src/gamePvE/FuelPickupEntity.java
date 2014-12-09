@@ -1,10 +1,6 @@
 package gamePvE;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-
 import gamePhysics2D.BoundingAABox;
-import gamePhysics2D.BoundingCircle;
 import gamePhysics2D.Entity;
 import gamePhysics2D.ShapeGroup;
 import gamePhysics2D.Vector2d;

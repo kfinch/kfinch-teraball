@@ -1,8 +1,6 @@
 package gamePvE;
 
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-
 import gamePhysics2D.BoundingLineSegment;
 import gamePhysics2D.Entity;
 import gamePhysics2D.ShapeGroup;

@@ -16,9 +16,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 import javax.swing.SwingUtilities;
@@ -164,7 +162,7 @@ public class GameRunner implements ActionListener, KeyListener, MouseListener, M
 		display = new GamePanel(this);
 		
 		//initialize simulator with entity categories and interaction info
-		//TODO: I'm not sure if it actually makes sense to hardcode this in. Investigate other options.
+		//currently this is all hardcoded, could make it map specific in the future
 		entitySim = new EntitySimulator();
 		adder = new EntityAdder(entitySim);
 				
@@ -304,11 +302,6 @@ public class GameRunner implements ActionListener, KeyListener, MouseListener, M
 		
 		//step the entity simulation
 		entitySim.step();
-		
-		//TODO: remove debugging
-		//System.out.println("Player location: " + playerEntity.shapes.xLoc + "," + playerEntity.shapes.yLoc);
-		//System.out.println("Player speed: " + playerEntity.velocity.x + "," + playerEntity.velocity.y);
-		//System.out.println("Player health: " + playerEntity.currHealth + " / " + playerEntity.maxHealth);
 		
 		//order the display to update and refresh
 		display.repaint();

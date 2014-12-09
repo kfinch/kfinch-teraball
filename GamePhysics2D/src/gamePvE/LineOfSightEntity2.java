@@ -3,7 +3,6 @@ package gamePvE;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import gamePhysics2D.BoundingLineSegment;
 import gamePhysics2D.Entity;
 import gamePhysics2D.Point2d;
 import gamePhysics2D.Ray2d;
@@ -13,17 +12,15 @@ public class LineOfSightEntity2 extends Entity {
 
 	private Ray2d ray;
 	private Color color;
-	private double thickness;
 	
-	public LineOfSightEntity2(Point2d start, Point2d finish, Color color, double thickness){
+	public LineOfSightEntity2(Point2d start, Point2d finish, Color color){
 		super(null, "los");
 		ray = new Ray2d(start, finish);
 		this.color = color;
-		this.thickness = thickness;
 	}
 	
 	public LineOfSightEntity2(Point2d src, Point2d dst) {
-		this(src, dst, Color.red, 1);
+		this(src, dst, Color.red);
 	}
 	
 	public void setStart(Point2d start){

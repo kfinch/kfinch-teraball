@@ -4,9 +4,6 @@ import gamePhysics2D.Entity;
 import gamePhysics2D.ShapeGroup;
 import gamePhysics2D.Vector2d;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-
 public class TerrainEntity extends Entity {
 	
 	public TerrainEntity(ShapeGroup sg) {

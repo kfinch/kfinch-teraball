@@ -1,8 +1,5 @@
 package gamePhysics2D;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Circle2d implements Frame2d {
 
 	public double x, y, r;
@@ -41,7 +38,6 @@ public class Circle2d implements Frame2d {
 			rx1 = l.s.x;
 			rx2 = l.s.x;
 			
-			//TODO: fold range check in to helper method?
 			//generate the range of the line, and check if the intersect points are within that range
 			range = new Range2d(Math.min(l.s.y, l.f.y), Math.max(l.s.y, l.f.y));
 			if(!range.inRangeInclusive(ry1))

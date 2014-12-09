@@ -8,10 +8,8 @@ import gamePhysics2D.EntitySimulator;
 import gamePhysics2D.Entity;
 import gamePhysics2D.PhysicsEntity;
 import gamePhysics2D.ShapeGroup;
-import gamePhysics2D.ShapePainter;
 import gamePhysics2D.Vector2d;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.LinkedList;

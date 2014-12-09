@@ -1,51 +1,12 @@
 package gamePvE;
 
-import gamePhysics2D.BoundingAABox;
-import gamePhysics2D.BoundingCircle;
-import gamePhysics2D.BoundingLineSegment;
-import gamePhysics2D.BoundingPolygon;
-import gamePhysics2D.BoundingShape;
-import gamePhysics2D.Entity;
-import gamePhysics2D.Point2d;
-import gamePhysics2D.Ray2d;
-import gamePhysics2D.EntitySimulator;
-import gamePhysics2D.ShapeGroup;
-import gamePhysics2D.Vector2d;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
-
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 
 public class GamePanel extends JPanel {
 	
