@@ -5,6 +5,8 @@ import java.util.List;
 
 public class BoundingPoint extends BoundingShape{
 
+	private static final long serialVersionUID = -7676682664712473665L;
+
 	public BoundingPoint(double xLoc, double yLoc){
 		this.xLoc = xLoc;
 		this.yLoc = yLoc;

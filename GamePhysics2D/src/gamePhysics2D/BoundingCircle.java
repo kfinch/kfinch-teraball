@@ -5,6 +5,8 @@ import java.util.List;
 
 public class BoundingCircle extends BoundingShape{
 
+	private static final long serialVersionUID = 2659633653786345976L;
+	
 	public double radius;
 	
 	public BoundingCircle(double xLoc, double yLoc, double radius){

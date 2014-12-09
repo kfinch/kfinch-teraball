@@ -6,6 +6,8 @@ import java.util.List;
 
 public class BoundingPolygon extends BoundingShape {
 
+	private static final long serialVersionUID = 2953094094154029252L;
+	
 	public int nPoints;
 	public double xPoints[];
 	public double yPoints[];

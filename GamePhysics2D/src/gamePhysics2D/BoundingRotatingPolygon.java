@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 public class BoundingRotatingPolygon extends BoundingPolygon {
 	
+	private static final long serialVersionUID = -2690699836988454167L;
+	
 	private double startingXPoints[];
 	private double startingYPoints[];
 	

@@ -9,8 +9,9 @@ import java.util.Set;
  */
 public abstract class DynamicEntity extends Entity {
 
-	public Vector2d velocity;
+	private static final long serialVersionUID = -7875904286933372690L;
 	
+	public Vector2d velocity;
 	
 	public DynamicEntity(ShapeGroup shapes, Set<String> tags) {
 		super(shapes, tags);

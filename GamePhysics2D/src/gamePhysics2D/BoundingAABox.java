@@ -5,6 +5,8 @@ import java.util.List;
 
 public class BoundingAABox extends BoundingShape {
 	
+	private static final long serialVersionUID = 3551439255031769528L;
+
 	public BoundingAABox(double xLoc, double yLoc, double xBound, double yBound){
 		this.xLoc = xLoc;
 		this.yLoc = yLoc;
