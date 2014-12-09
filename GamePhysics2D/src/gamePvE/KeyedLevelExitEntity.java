@@ -13,6 +13,8 @@ import java.util.List;
 
 public class KeyedLevelExitEntity extends Entity {
 	
+	private static final long serialVersionUID = -2546909117783528676L;
+	
 	private int maxKeys;
 	private int currKeys;
 	private KeyEntity[] keys;
@@ -123,6 +125,8 @@ public class KeyedLevelExitEntity extends Entity {
 }
 
 class KeyEntity extends Entity {
+	
+	private static final long serialVersionUID = -7014584980766678291L;
 	
 	protected Color color;
 	

@@ -17,6 +17,8 @@ import java.util.List;
 
 public class PlayerEntity extends PhysicsEntity {
 
+	private static final long serialVersionUID = -4674818783143636930L;
+	
 	public double maxHealth;
 	public double currHealth;
 	public double maxSpeed;
@@ -304,6 +306,10 @@ public class PlayerEntity extends PhysicsEntity {
 
 class PlayerShieldEntity extends Entity {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8813073743512620663L;
 	private PlayerEntity player;
 	public boolean isShieldOn;
 	

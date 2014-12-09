@@ -7,6 +7,8 @@ import gamePhysics2D.Vector2d;
 
 public class GateEntity extends TogglableEntity {
 
+	private static final long serialVersionUID = 5623934226076322686L;
+	
 	private Color closedColor;
 	private Color openColor;
 	 

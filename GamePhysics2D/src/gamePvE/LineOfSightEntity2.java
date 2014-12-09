@@ -10,6 +10,8 @@ import gamePhysics2D.Vector2d;
 
 public class LineOfSightEntity2 extends Entity {
 
+	private static final long serialVersionUID = 2178526228675650236L;
+	
 	private Ray2d ray;
 	private Color color;
 	

@@ -18,6 +18,8 @@ import gamePhysics2D.Vector2d;
  */
 public class ExplosionEntity extends Entity {
 
+	private static final long serialVersionUID = -1054388351285603211L;
+	
 	List<ExplosionPoint> explosions;
 	
 	public ExplosionEntity(ShapeGroup shapes, String tag, List<ExplosionPoint> explosions){

@@ -7,6 +7,8 @@ import gamePhysics2D.Vector2d;
 
 public class LevelExitEntity extends Entity {
 	
+	private static final long serialVersionUID = -5280395074194523361L;
+
 	public LevelExitEntity(ShapeGroup shapes) {
 		super(shapes, "basicexit");
 		addTag("activeexit");

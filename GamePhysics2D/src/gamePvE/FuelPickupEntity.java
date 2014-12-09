@@ -7,8 +7,9 @@ import gamePhysics2D.Vector2d;
 
 public class FuelPickupEntity extends Entity {
 	
-	private int value;
+	private static final long serialVersionUID = -2610780209415150966L;
 	
+	private int value;
 	
 	public FuelPickupEntity(ShapeGroup shapes, int value) {
 		super(shapes, "coin");

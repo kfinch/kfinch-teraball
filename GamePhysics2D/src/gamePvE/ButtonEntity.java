@@ -10,6 +10,8 @@ import gamePhysics2D.Vector2d;
 
 public class ButtonEntity extends Entity {
 
+	private static final long serialVersionUID = 7035873488234804895L;
+	
 	public static final int TOGGLE_MODE = 0; //pressing button toggles between 'on' and 'off'
 	public static final int HOLD_MODE = 1; //button is 'on' only while pressed
 	public static final int ONE_PRESS_MODE = 2; //pressing button once leaves it permanently 'on'

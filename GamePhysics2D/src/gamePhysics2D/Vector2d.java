@@ -1,5 +1,7 @@
 package gamePhysics2D;
 
+import java.io.Serializable;
+
 /**
  * A representation of a vector in 2D space.
  * Generates the x and y magnitude from angle and absolute magnitude.
@@ -7,7 +9,9 @@ package gamePhysics2D;
  * 
  * @author Kelton Finch
  */
-public class Vector2d {
+public class Vector2d implements Serializable {
+	
+	private static final long serialVersionUID = 1898148059127467476L;
 	
 	public double x, y;
 	

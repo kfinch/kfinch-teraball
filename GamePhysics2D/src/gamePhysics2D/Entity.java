@@ -1,6 +1,7 @@
 package gamePhysics2D;
 
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,7 +14,9 @@ import java.util.Set;
  * 
  * @author Kelton Finch
  */
-public abstract class Entity {
+public abstract class Entity implements Serializable {
+	
+	private static final long serialVersionUID = 2051214311013789538L;
 	
 	public ShapeGroup shapes;
 	public Set<String> tags;

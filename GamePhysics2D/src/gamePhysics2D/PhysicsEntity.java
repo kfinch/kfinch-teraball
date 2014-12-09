@@ -4,6 +4,8 @@ import java.util.Set;
 
 public abstract class PhysicsEntity extends DynamicEntity {
 
+	private static final long serialVersionUID = 5387058425377632780L;
+	
 	public double mass;
 	public double bounciness;
 	public double friction;

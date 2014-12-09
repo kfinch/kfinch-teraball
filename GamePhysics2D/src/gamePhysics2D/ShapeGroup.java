@@ -2,12 +2,15 @@ package gamePhysics2D;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class ShapeGroup {
+public class ShapeGroup implements Serializable {
 
+	private static final long serialVersionUID = -4912920693659012027L;
+	
 	private List<ColoredShape> coloredShapes;
 	private List<BoundingShape> shapes;
 	public double xLoc, yLoc, xBound, yBound;
@@ -334,8 +337,9 @@ public class ShapeGroup {
 	
 }
 
-class ColoredShape {
-	 public BoundingShape shape;
+class ColoredShape implements Serializable {
+	private static final long serialVersionUID = -3916354297641122196L;
+	public BoundingShape shape;
 	 public Color color;
 	 public ColoredShape(BoundingShape shape, Color color){
 		 this.shape = shape;

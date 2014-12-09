@@ -11,6 +11,8 @@ import gamePhysics2D.Vector2d;
 
 public class GunTurretEntity extends Entity {
 	
+	private static final long serialVersionUID = -538168454460366723L;
+
 	private LineOfSightEntity los;
 	
 	private int gunCDTimer;
@@ -107,6 +109,8 @@ public class GunTurretEntity extends Entity {
 }
 
 class GunTurretProjectileEntity extends DynamicEntity {
+	
+	private static final long serialVersionUID = -2013850876102995592L;
 	
 	private double damage;
 	private double knockback;

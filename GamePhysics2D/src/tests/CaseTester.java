@@ -1,9 +1,16 @@
 package tests;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import mapEditor.StageInfo;
 import gamePhysics2D.BoundingAABox;
 import gamePhysics2D.BoundingCircle;
 import gamePhysics2D.BoundingRotatingPolygon;
@@ -14,11 +21,13 @@ import gamePhysics2D.Point2d;
 import gamePhysics2D.Ray2d;
 import gamePhysics2D.ShapeGroup;
 import gamePhysics2D.Vector2d;
+import gamePvE.GameRunner;
+import gamePvE.MapCoder;
 
 public class CaseTester {
 
 	public static void main(String args[]){
-		fileWriteTest();
+		serializeTest();
 	}
 	
 	private static void test1(){
@@ -92,6 +101,35 @@ public class CaseTester {
 			writer.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("file not found");
+		}
+	}
+	
+	private static void serializeTest(){
+		try {
+			StageInfo stage = MapCoder.decodeMapFile(new File("mapeditortest.tbstage"), new GameRunner(null));
+			FileOutputStream fileOut = new FileOutputStream("serializetest.ser");
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+	        out.writeObject(stage);
+	        out.close();
+	        fileOut.close();
+	        
+	        System.out.println("StageInfo written to file... ");
+	        
+	        FileInputStream fileIn = new FileInputStream("serializetest.ser");
+	        ObjectInputStream in = new ObjectInputStream(fileIn);
+	        StageInfo sameStage = (StageInfo) in.readObject();
+	        in.close();
+	        fileIn.close();
+	        
+	        System.out.println("StageInfo read from file.. ");
+	        
+	        
+		} catch (FileNotFoundException e) {
+			System.out.println("file not found, yo");
+		} catch (IOException e) {
+			System.out.println("some i/o shit done went wrong: " + e.getMessage());
+		} catch (ClassNotFoundException e) {
+			System.out.println("WHERE IS MY CLASS");
 		}
 	}
 }

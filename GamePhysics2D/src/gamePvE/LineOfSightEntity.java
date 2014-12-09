@@ -11,6 +11,8 @@ import gamePhysics2D.Vector2d;
  */
 public class LineOfSightEntity extends Entity{
 
+	private static final long serialVersionUID = -2740858459683622390L;
+	
 	public Entity src, dst;
 	private BoundingLineSegment losLine;
 	

@@ -7,6 +7,9 @@ import gamePhysics2D.Vector2d;
 import java.awt.Color;
 
 public class WireEntity extends TogglableEntity {
+	
+	private static final long serialVersionUID = 5168598323106401199L;
+	
 	private Color offColor;
 	private Color onColor;
 	 

@@ -7,6 +7,8 @@ import gamePhysics2D.Vector2d;
 
 public class CoinEntity extends Entity {
 
+	private static final long serialVersionUID = -5532678596717462434L;
+	
 	private int value;
 	
 	public CoinEntity(ShapeGroup shapes, int value) {

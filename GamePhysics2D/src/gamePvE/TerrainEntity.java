@@ -6,6 +6,8 @@ import gamePhysics2D.Vector2d;
 
 public class TerrainEntity extends Entity {
 	
+	private static final long serialVersionUID = 8496900945587301602L;
+
 	public TerrainEntity(ShapeGroup sg) {
 		super(sg, "terrain");
 		sg.setColor(GameRunner.TERRAIN_COLOR);

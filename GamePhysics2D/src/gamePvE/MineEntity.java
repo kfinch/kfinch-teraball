@@ -11,6 +11,8 @@ import java.util.List;
 
 public class MineEntity extends Entity {
 
+	private static final long serialVersionUID = -6539007880101324239L;
+	
 	double damage;
 	double knockback;
 	

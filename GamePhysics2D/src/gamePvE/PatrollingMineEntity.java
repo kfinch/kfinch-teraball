@@ -4,6 +4,8 @@ import gamePhysics2D.Vector2d;
 
 public class PatrollingMineEntity extends MineEntity {
 
+	private static final long serialVersionUID = -3113288558289825940L;
+	
 	int nWaypoints;
 	double xWaypoints[];
 	double yWaypoints[];

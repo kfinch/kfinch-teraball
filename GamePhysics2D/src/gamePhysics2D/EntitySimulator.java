@@ -1,6 +1,7 @@
 package gamePhysics2D;
 
 import java.awt.Graphics2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -18,8 +19,10 @@ import java.util.Set;
  * 
  * @author Kelton Finch
  */
-public class EntitySimulator {
+public class EntitySimulator implements Serializable {
 
+	private static final long serialVersionUID = -7784533886082574195L;
+	
 	private List<List<Entity>> entityLists; //list of lists of entities
 	private List<Set<Integer>> entityInteractions; //list of sets of category interactions
 	private List<String> entityListNames; //list of categories

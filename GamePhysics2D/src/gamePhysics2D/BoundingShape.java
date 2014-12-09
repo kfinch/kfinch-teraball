@@ -1,5 +1,6 @@
 package gamePhysics2D;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,8 +16,10 @@ import java.util.Set;
  * 
  * @author Kelton Finch
  */
-public abstract class BoundingShape implements Cloneable {
+public abstract class BoundingShape implements Cloneable, Serializable {
 
+	private static final long serialVersionUID = 4845081091663797619L;
+	
 	public double xLoc, yLoc, xBound, yBound;
 	
 	public abstract List<Frame2d> getFrame();

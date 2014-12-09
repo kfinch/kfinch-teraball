@@ -1,5 +1,6 @@
 package misc;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -18,8 +19,10 @@ import java.util.Set;
  * @param <A> First object type.
  * @param <B> Second object type.
  */
-public class BiHashMap<A extends Object, B extends Object> {
+public class BiHashMap<A extends Object, B extends Object> implements Serializable {
 
+	private static final long serialVersionUID = 1142640575261301935L;
+	
 	private Map<A,B> ab;
 	private Map<B,A> ba;
 	

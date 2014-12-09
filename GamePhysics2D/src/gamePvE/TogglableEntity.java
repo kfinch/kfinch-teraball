@@ -8,6 +8,8 @@ import gamePhysics2D.ShapeGroup;
 
 public abstract class TogglableEntity extends Entity {
 
+	private static final long serialVersionUID = 1969462688072757164L;
+	
 	public static final int AND_MODE = 0; //on iff all attached buttons are on.
 	public static final int OR_MODE = 1; //on iff at least one attached button is on.
 	public static final int XOR_MODE = 2; //on iff exactly one attached button is on.

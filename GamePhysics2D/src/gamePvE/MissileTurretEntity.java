@@ -17,6 +17,8 @@ import java.util.LinkedList;
 
 public class MissileTurretEntity extends Entity{
 	
+	private static final long serialVersionUID = 343989837886939085L;
+
 	private LineOfSightEntity los;
 	
 	private int missileCDTimer;
@@ -79,6 +81,8 @@ public class MissileTurretEntity extends Entity{
 }
 
 class MissileEntity extends DynamicEntity {
+	
+	private static final long serialVersionUID = 1018503731646587311L;
 	
 	private double damage;
 	private double knockback;
