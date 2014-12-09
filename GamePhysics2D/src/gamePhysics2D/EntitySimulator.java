@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
@@ -19,13 +20,13 @@ import java.util.Set;
  * 
  * @author Kelton Finch
  */
-public class EntitySimulator implements Serializable {
+public class EntitySimulator implements Serializable, Iterable<Entity> {
 
 	private static final long serialVersionUID = -7784533886082574195L;
 	
-	private List<List<Entity>> entityLists; //list of lists of entities
-	private List<Set<Integer>> entityInteractions; //list of sets of category interactions
-	private List<String> entityListNames; //list of categories
+	List<List<Entity>> entityLists; //list of lists of entities
+	List<Set<Integer>> entityInteractions; //list of sets of category interactions
+	List<String> entityListNames; //list of categories
 	
 	public EntitySimulator(){
 		entityLists = new ArrayList<List<Entity>>();
@@ -239,4 +240,64 @@ public class EntitySimulator implements Serializable {
 		}
 	}
 
+	@Override
+	public Iterator<Entity> iterator() {
+		return new EntitySimulatorIterator(this);
+	}
+
+}
+
+class EntitySimulatorIterator implements Iterator<Entity> {
+
+	private EntitySimulator sim;
+	private Iterator<List<Entity>> listIterator;
+	private Iterator<Entity> entityIterator;
+	
+	private Entity next;
+	private boolean done;
+	
+	public EntitySimulatorIterator(EntitySimulator sim){
+		this.sim = sim;
+		listIterator = sim.entityLists.iterator();
+		if(listIterator.hasNext()){
+			entityIterator = listIterator.next().iterator();
+			done = false;
+			generateNext();
+		}
+		else
+			done = true;
+	}
+	
+	@Override
+	public boolean hasNext() {
+		return (!done);
+	}
+
+	@Override
+	public Entity next() {
+		if(done)
+			throw new NoSuchElementException();
+		Entity result = next;
+		generateNext();
+		return result;
+	}
+	
+	private void generateNext(){
+		if(entityIterator.hasNext()){
+			next = entityIterator.next();
+		}
+		else if(listIterator.hasNext()){
+			entityIterator = listIterator.next().iterator();
+			generateNext();
+		}
+		else{
+			done = true;
+		}
+	}
+
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException();
+	}
+	
 }
