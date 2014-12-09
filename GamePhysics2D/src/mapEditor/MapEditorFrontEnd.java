@@ -11,6 +11,7 @@ import gamePvE.TeraBallFrontEnd;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -35,6 +36,8 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
 	private MapEditorRunner editor;
 	private MapEditorPanel editorPanel;
 	
+	private JFileChooser fileChooser;
+	
 	public MapEditorFrontEnd(){
 		initUI();
 	}
@@ -53,6 +56,10 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
 		//initialize various panels
 		editorPanel = editor.display;
 		add(editorPanel);
+		
+		//initialize the file chooser (should be in current working directory, which should be where game is)
+		fileChooser = new JFileChooser(new File("").getAbsoluteFile());
+		fileChooser.setFileFilter(new StageFileFilter());
 		
 		//initialize menu bar
 		this.setJMenuBar(createMenuBar());
@@ -159,7 +166,10 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
 			System.exit(0);
 		}
 		else if(e.getActionCommand().equals(OPEN_MAP_STRING)){
-			editor.openStageFile(new File("mapeditortest.tbstage")); //TODO: testing
+			//editor.openStageFile(new File("mapeditortest.tbstage")); //TODO: remove testing
+			int returnVal = fileChooser.showOpenDialog(this);
+			if (returnVal == JFileChooser.APPROVE_OPTION)
+	            editor.openStageFile(fileChooser.getSelectedFile());
 		}
 		else if(e.getActionCommand().equals(SAVE_MAP_STRING)){
 			editor.saveStageFile();

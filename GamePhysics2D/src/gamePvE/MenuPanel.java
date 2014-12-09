@@ -56,7 +56,7 @@ public class MenuPanel extends JPanel implements KeyListener {
 		switch(e.getKeyCode()){
 		case KeyEvent.VK_S:
 			parent.swapToGamePanel();
-			parent.loadStage(new File("stage1.tbstage"));
+			parent.loadStage(new File("mapeditortest.tbstage"));
 			parent.startSimulation();
 			break;
 		case KeyEvent.VK_P:

@@ -1,8 +1,11 @@
 package mapEditor;
 
 import gamePhysics2D.Entity;
+
+import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+
 import javax.swing.JPanel;
 
 public class MapEditorPanel extends JPanel {
@@ -55,13 +58,22 @@ public class MapEditorPanel extends JPanel {
 		}
 		
 		//paint mouse click-drag box
-		if(editor.isBoxSelecting){
+		if(editor.userState == MapEditorRunner.BOX_SELECTING){
 			int xMin = (int) Math.min(editor.mouseLoc.x, editor.mouseDragStartLoc.x);
 			int yMin = (int) Math.min(editor.mouseLoc.y, editor.mouseDragStartLoc.y);
 			int xMax = (int) Math.max(editor.mouseLoc.x, editor.mouseDragStartLoc.x);
 			int yMax = (int) Math.max(editor.mouseLoc.y, editor.mouseDragStartLoc.y);
 			g2d.setColor(MapEditorRunner.MOUSE_DRAG_COLOR);
 			g2d.drawRect(xMin, yMin, xMax-xMin, yMax-yMin);
+		}
+		//paint transparent versions of selected entities, showing where they will be dropped
+		else if(editor.userState == MapEditorRunner.DRAGGING_ENTITIES){
+			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+			double offsetX = editor.gameMouseDragStartLoc.x - editor.gameMouseLoc.x;
+			double offsetY = editor.gameMouseDragStartLoc.y - editor.gameMouseLoc.y;
+			for(Entity e : editor.selectedEntities)
+				e.paintEntity(g2d, cornerX+offsetX, cornerY+offsetY, zoom);
+			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 		}
 	}
 }

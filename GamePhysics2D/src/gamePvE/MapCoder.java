@@ -418,7 +418,7 @@ public class MapCoder {
 			int count = sc.nextInt();
 			ShapeGroup result = decodeShapeGroup(sc);
 			for(int i=1; i<count; i++)
-				result.addAll(decodeShapeGroup(sc));
+				result.merge(decodeShapeGroup(sc));
 			return result;
 		}
 		else{

@@ -29,6 +29,10 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 	public static final Color SELECTION_BOX_COLOR = Color.decode("#ff0000");
 	public static final Color MOUSE_DRAG_COLOR = Color.decode("#999999");
 	
+	public static final int MANIPULATOR_TOOL = 0;
+	public static final int DRAGGING_ENTITIES = 1;
+	public static final int BOX_SELECTING = 2;
+	
 	public static final double ZOOM_FACTOR = 1.15;
 	
 	//the currently opened stage's info
@@ -52,8 +56,7 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 	protected Point2d mouseDragStartLoc; //start of mouse drag location in display coordinates
 	protected Point2d gameMouseDragStartLoc; //start of mouse drag location in game coordinates
 	
-	protected boolean isBoxSelecting; //is user 'box selecting' entities?
-	protected boolean isEntityDragging; //is user dragging entities?
+	protected int userState; //tracks what the user is doing, see the integer constants above.
 	
 	public MapEditorRunner(){
 		game = new GameRunner(null); //can leave parent null, because methods that use it won't be called
@@ -64,19 +67,93 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 		
 		mouseLoc = new Point2d(0,0);
 		mouseDragStartLoc = new Point2d(0,0);
+		
+		userState = MANIPULATOR_TOOL;
+	}
+	
+	/*
+	 * Returns a list of selectable entities that intersect with the given shape(s).
+	 */
+	private List<Entity> getSelectableEntitiesIntersectingShapes(ShapeGroup shapes){
+		List<Entity> selection = game.getSim().detectIndividualCollision(shapes);
+		cullSelection(selection);
+		return selection;
+	}
+	
+	/*
+	 * Removes from the selection pool entities that should not be selectable in the map editor
+	 */
+	private void cullSelection(List<Entity> selection){
+		Iterator<Entity> iter = selection.iterator();
+		while(iter.hasNext()){
+			Entity e = iter.next();
+			if(e.hasTag("los") || e.hasTag("edge") || e.hasTag("playershield") || e.hasTag("player"))
+				iter.remove();
+		}
+	}
+	
+	/*
+	 * Returns the 'top most' selectable entity at the chosen location (or null if nothing is there)
+	 */
+	private Entity getSelectableEntityAtPoint(double xLoc, double yLoc){
+		List<Entity> selection = getSelectableEntitiesIntersectingShapes(new ShapeGroup(new BoundingPoint(xLoc, yLoc)));
+		if(selection.isEmpty())
+			return null;
+		return selection.get(0);
+	}
+	
+	/*
+	 * Returns all selectable entities within the chosen box
+	 */
+	private List<Entity> getSelectableEntitiesInBox(double xLoc, double yLoc, double xBound, double yBound){
+		ShapeGroup box = new ShapeGroup(new BoundingAABox(xLoc, yLoc, xBound, yBound));
+		return getSelectableEntitiesIntersectingShapes(box);
 	}
 	
 	/**
-	 * Adds at most one entity at the chosen location to the list of selected entities
+	 * Adds the 'top most' entity at the chosen location to the selection list.
 	 * @param xLoc x location (game coordinates) of the selected spot
 	 * @param yLoc y location (game coordinates) of the selected spot
 	 */
 	public void selectEntity(double xLoc, double yLoc){
-		ShapeGroup point = new ShapeGroup(new BoundingPoint(xLoc, yLoc));
-		List<Entity> selection = game.getSim().detectIndividualCollision(point);
-		cullSelection(selection);
-		if(!selection.isEmpty())
-			selectedEntities.add(selection.get(0));
+		Entity e = getSelectableEntityAtPoint(xLoc, yLoc);
+		
+		if(e == null)
+			return;
+		
+		selectedEntities.add(e);
+	}
+	
+	/**
+	 * Removes the 'top most' entity at the chosen location to the selection list.
+	 * @param xLoc x location (game coordinates) of the selected spot
+	 * @param yLoc y location (game coordinates) of the selected spot
+	 */
+	public void deselectEntity(double xLoc, double yLoc){
+		Entity e = getSelectableEntityAtPoint(xLoc, yLoc);
+		
+		if(e == null)
+			return;
+		
+		selectedEntities.remove(e);
+	}
+	
+	/**
+	 * Adds the 'top most' entity at the chosen location to the selection list
+	 * if it wasn't already selected, removes it if it was already selected.
+	 * @param xLoc x location (game coordinates) of the selected spot
+	 * @param yLoc y location (game coordinates) of the selected spot
+	 */
+	public void toggleEntitySelection(double xLoc, double yLoc){
+		Entity e = getSelectableEntityAtPoint(xLoc, yLoc);
+		
+		if(e == null)
+			return;
+		
+		if(selectedEntities.contains(e))
+			selectedEntities.remove(e);
+		else
+			selectedEntities.add(e);
 	}
 	
 	/**
@@ -87,22 +164,18 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 	 * @param yBound y bound (game coordinates) of the rectangular selection area. Height of area = 2 * yBound
 	 */
 	public void selectEntities(double xLoc, double yLoc, double xBound, double yBound){
-		ShapeGroup box = new ShapeGroup(new BoundingAABox(xLoc, yLoc, xBound, yBound));
-		List<Entity> selection = game.getSim().detectIndividualCollision(box);
-		cullSelection(selection);
-		selectedEntities.addAll(selection);
+		selectedEntities.addAll(getSelectableEntitiesInBox(xLoc, yLoc, xBound, yBound));
 	}
 	
-	/*
-	 * Removes from the selection pool entities that should not be selectable in the map editor
+	/**
+	 * Removes all entities in the selected area from the list of selected entities
+	 * @param xLoc x location (game coordinates) of the center of the selected area
+	 * @param yLoc y location (game coordinates) of the center of the selected area
+	 * @param xBound x bound (game coordinates) of the rectangular selection area. Width of area = 2 * xBound
+	 * @param yBound y bound (game coordinates) of the rectangular selection area. Height of area = 2 * yBound
 	 */
-	private void cullSelection(List<Entity> selection){
-		Iterator<Entity> iter = selection.iterator();
-		while(iter.hasNext()){
-			Entity e = iter.next();
-			if(e.hasTag("los") || e.hasTag("edge") || e.hasTag("playershield"))
-				iter.remove();
-		}
+	public void deselectEntities(double xLoc, double yLoc, double xBound, double yBound){
+		selectedEntities.removeAll(getSelectableEntitiesInBox(xLoc, yLoc, xBound, yBound));
 	}
 	
 	/**
@@ -169,20 +242,12 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		
+		Point2d prevMouseLoc = new Point2d(mouseLoc);
+		updateMouseLoc(e);
 		if(SwingUtilities.isRightMouseButton(e)){
 			//TODO: handle problems when right and left mouse buttons pressed at same time
-			display.cornerX += (mouseLoc.x - e.getX()) / display.zoom;
-			display.cornerY += (mouseLoc.y - e.getY()) / display.zoom;
-			mouseLoc.x = e.getX();
-			mouseLoc.y = e.getY();
-		}
-		else if(isBoxSelecting){
-			updateMouseLoc(e);
-		}
-		else if(isEntityDragging){
-			updateMouseLoc(e);
-			//TODO: draw dragging entities (or actually update their location)
+			display.cornerX += (prevMouseLoc.x - mouseLoc.x) / display.zoom;
+			display.cornerY += (prevMouseLoc.y - mouseLoc.y) / display.zoom;
 		}
 		
 		display.repaint();
@@ -198,16 +263,7 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 	public void mouseExited(MouseEvent e) {}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		updateMouseLoc(e);
-		//select one entity at mouse click
-		if(SwingUtilities.isLeftMouseButton(e)){
-			if(!e.isShiftDown())
-				clearSelection();
-			Point2d gameLoc = displayLocToGameLoc(mouseLoc);
-			selectEntity(gameLoc.x, gameLoc.y);
-		}
-	}
+	public void mouseClicked(MouseEvent e) {}
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -217,26 +273,27 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 		gameMouseDragStartLoc = displayLocToGameLoc(mouseDragStartLoc);
 		
 		if(SwingUtilities.isLeftMouseButton(e)){
-			boolean clickingOnSelectedEntity = false;
-			ShapeGroup point = new ShapeGroup(new BoundingPoint(gameMouseLoc.x, gameMouseLoc.y));
-			List<Entity> selection = game.getSim().detectIndividualCollision(point);
-			cullSelection(selection);
-			
-			for(Entity en1 : selectedEntities){
-				for(Entity en2 : selection){
-					if(en1 == en2)
+			if(userState == MANIPULATOR_TOOL){
+				boolean clickingOnEntity = false;
+				boolean clickingOnSelectedEntity = false;
+				Entity en = getSelectableEntityAtPoint(gameMouseLoc.x, gameMouseLoc.y);
+				if(en != null){
+					clickingOnEntity = true;
+					if(selectedEntities.contains(en))
 						clickingOnSelectedEntity = true;
 				}
-			}
 			
-			if(clickingOnSelectedEntity){
-				isEntityDragging = true;
-				//TODO: init shadowy entities being dragged graphic?
-			}
-			else{
-				isBoxSelecting = true;
-				if(!e.isShiftDown())
+				if(clickingOnSelectedEntity){
+					userState = DRAGGING_ENTITIES;
+				}
+				else if(clickingOnEntity){
 					clearSelection();
+					selectedEntities.add(en);
+					userState = DRAGGING_ENTITIES;
+				}
+				else{
+					userState = BOX_SELECTING;
+				}
 			}
 		}
 		
@@ -248,21 +305,29 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 		updateMouseLoc(e);
 		
 		//select one or more entities that were just boxed with the mouse
-		if(isBoxSelecting){
-			isBoxSelecting = false;
-			Point2d gameLoc1 = displayLocToGameLoc(mouseDragStartLoc);
-			Point2d gameLoc2 = displayLocToGameLoc(mouseLoc);
-			double xLoc = (gameLoc1.x + gameLoc2.x) / 2;
-			double yLoc = (gameLoc1.y + gameLoc2.y) / 2;
-			double xBound = Math.abs(gameLoc1.x - gameLoc2.x) / 2;
-			double yBound = Math.abs(gameLoc1.y - gameLoc2.y) / 2;
-			selectEntities(xLoc, yLoc, xBound, yBound);
-		}
-		else if(isEntityDragging){
-			isEntityDragging = false;
-			for(Entity en : selectedEntities){
-				en.shapes.translate(new Vector2d(gameMouseDragStartLoc, gameMouseLoc));
-				stage.entityCodeMap.put(en, MapCoder.encodeEntity(en, stage));
+		if(SwingUtilities.isLeftMouseButton(e)){
+			if(userState == BOX_SELECTING){
+				userState = MANIPULATOR_TOOL;
+				Point2d gameLoc1 = displayLocToGameLoc(mouseDragStartLoc);
+				Point2d gameLoc2 = displayLocToGameLoc(mouseLoc);
+				double xLoc = (gameLoc1.x + gameLoc2.x) / 2;
+				double yLoc = (gameLoc1.y + gameLoc2.y) / 2;
+				double xBound = Math.abs(gameLoc1.x - gameLoc2.x) / 2;
+				double yBound = Math.abs(gameLoc1.y - gameLoc2.y) / 2;
+				if(e.isControlDown())
+					deselectEntities(xLoc, yLoc, xBound, yBound);
+				else{
+					if(!e.isShiftDown())
+						clearSelection();
+					selectEntities(xLoc, yLoc, xBound, yBound);
+				}
+			}
+			else if(userState == DRAGGING_ENTITIES){
+				userState = MANIPULATOR_TOOL;
+				for(Entity en : selectedEntities){
+					en.shapes.translate(new Vector2d(gameMouseDragStartLoc, gameMouseLoc));
+					stage.entityCodeMap.put(en, MapCoder.encodeEntity(en, stage));
+				}
 			}
 		}
 		
