@@ -191,6 +191,30 @@ public class GameRunner implements ActionListener, KeyListener, MouseListener, M
 		entitySim.newInteraction("los", "player");
 	}
 	
+	public EntitySimulator getSim(){
+		return entitySim;
+	}
+	
+	/*
+	 * For wholesale loading in a new sim
+	 */
+	public void setSim(EntitySimulator sim){
+		this.entitySim = sim;
+		adder = new EntityAdder(entitySim);
+	}
+	
+	public EntityAdder getAdder(){
+		return adder;
+	}
+	
+	public File getNextStage(){
+		return nextStage;
+	}
+	
+	public void setNextStage(File nextStage){
+		this.nextStage = nextStage;
+	}
+	
 	public void loadStage(File stageFile){
 		//TODO: catch here, or propagate one more level up?
 		try {
@@ -200,14 +224,6 @@ public class GameRunner implements ActionListener, KeyListener, MouseListener, M
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found: " + stageFile);
 		}
-	}
-	
-	public EntitySimulator getSim(){
-		return entitySim;
-	}
-	
-	public EntityAdder getAdder(){
-		return adder;
 	}
 
 	/**
