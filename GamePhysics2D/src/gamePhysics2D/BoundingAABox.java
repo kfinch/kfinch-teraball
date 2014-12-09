@@ -73,4 +73,9 @@ public class BoundingAABox extends BoundingShape {
 		return new BoundingAABox(mergeXLoc, mergeYLoc, mergeXBound, mergeYBound);
 	}
 
+	@Override
+	public Object clone() {
+		return new BoundingAABox(xLoc, yLoc, xBound, yBound);
+	}
+
 }

@@ -92,4 +92,9 @@ public class BoundingLineSegment extends BoundingShape{
 		return result;
 	}
 
+	@Override
+	public Object clone() {
+		return new BoundingLineSegment(x1, y1, x2, y2);
+	}
+
 }

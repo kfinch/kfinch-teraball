@@ -15,7 +15,7 @@ import java.util.Set;
  * 
  * @author Kelton Finch
  */
-public abstract class BoundingShape {
+public abstract class BoundingShape implements Cloneable {
 
 	public double xLoc, yLoc, xBound, yBound;
 	
@@ -26,6 +26,9 @@ public abstract class BoundingShape {
 	public abstract List<Double> getSatLines(BoundingShape s);
 	
 	public abstract List<Point2d> getPoints();
+	
+	@Override
+	public abstract Object clone();
 	
 	/**
 	 * Sets size of axis aligned bounding box

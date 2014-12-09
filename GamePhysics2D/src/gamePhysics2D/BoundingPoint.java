@@ -30,7 +30,7 @@ public class BoundingPoint extends BoundingShape{
 	@Override
 	/*
 	 * A point has no SAT lines, and so only uses the SAT lines of the other shape when checking for collision.
-	 * This means that a BoundingPoint can never collide with another BoundingPoint
+	 * Note that this means that a BoundingPoint can never collide with another BoundingPoint
 	 */
 	public List<Double> getSatLines(BoundingShape s) {
 		return new ArrayList<Double>();
@@ -43,4 +43,9 @@ public class BoundingPoint extends BoundingShape{
 		return result;
 	}
 
+	@Override
+	public Object clone() {
+		return new BoundingPoint(xLoc, yLoc);
+	}
+	
 }

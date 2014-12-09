@@ -63,4 +63,9 @@ public class BoundingCircle extends BoundingShape{
 		return result;
 	}
 
+	@Override
+	public Object clone() {
+		return new BoundingCircle(xLoc, yLoc, radius);
+	}
+
 }

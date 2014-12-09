@@ -1,5 +1,7 @@
 package gamePhysics2D;
 
+import java.util.Arrays;
+
 public class BoundingRotatingPolygon extends BoundingPolygon {
 	
 	private double startingXPoints[];
@@ -46,5 +48,15 @@ public class BoundingRotatingPolygon extends BoundingPolygon {
 			xPoints[i] = rot.x;
 			yPoints[i] = rot.y;
 		}
+	}
+	
+	@Override
+	public Object clone(){
+		BoundingRotatingPolygon result =
+				new BoundingRotatingPolygon(xLoc, yLoc, nPoints, Arrays.copyOf(xPoints, xPoints.length),
+						                    Arrays.copyOf(yPoints, yPoints.length));
+		result.startingXPoints = Arrays.copyOf(startingXPoints, startingXPoints.length);
+		result.startingYPoints = Arrays.copyOf(startingYPoints, startingYPoints.length);
+		return result;
 	}
 }

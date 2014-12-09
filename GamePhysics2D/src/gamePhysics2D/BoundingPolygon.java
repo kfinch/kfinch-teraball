@@ -1,6 +1,7 @@
 package gamePhysics2D;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BoundingPolygon extends BoundingShape {
@@ -104,6 +105,12 @@ public class BoundingPolygon extends BoundingShape {
 			result.add(new Point2d(xPoints[i]+xLoc, yPoints[i]+yLoc));
 		}
 		return result;
+	}
+
+	@Override
+	public Object clone() {
+		return new BoundingPolygon(xLoc, yLoc, nPoints, Arrays.copyOf(xPoints, xPoints.length),
+				                   Arrays.copyOf(yPoints, yPoints.length));
 	}
 
 }
