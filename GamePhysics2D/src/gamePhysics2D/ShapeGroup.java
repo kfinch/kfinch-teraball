@@ -3,6 +3,7 @@ package gamePhysics2D;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ShapeGroup {
@@ -112,7 +113,15 @@ public class ShapeGroup {
 		yBound = (yMax - yMin) / 2;
 	}
 	
-	public void addAll(ShapeGroup sg){
+	public void addAll(Collection<BoundingShape> shapeCollection, Color color){
+		for(BoundingShape shape : shapeCollection){
+			coloredShapes.add(new ColoredShape(shape, color));
+			shapes.add(shape);
+		}
+		updateDimensions();
+	}
+	
+	public void merge(ShapeGroup sg){
 		coloredShapes.addAll(sg.coloredShapes);
 		shapes.addAll(sg.shapes);
 		updateDimensions();

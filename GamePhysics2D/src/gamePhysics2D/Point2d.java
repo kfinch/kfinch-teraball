@@ -8,6 +8,11 @@ public class Point2d {
 		this.y = y;
 	}
 	
+	public Point2d(Point2d p) {
+		this.x = p.x;
+		this.y = p.y;
+	}
+
 	public double distanceTo(Point2d p){
 		return Math.sqrt(Math.pow(x - p.x, 2) + Math.pow(y - p.y, 2));
 	}
