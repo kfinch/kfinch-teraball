@@ -13,14 +13,16 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 
 import mapEditor.EntityLink;
+import mapEditor.OldStageInfo;
 import mapEditor.StageInfo;
-import mapEditor.StageInfo2;
 import misc.BiHashMap;
 
 /**
  * A second attempt at a class to read/write stage files.
  * This scheme uses a serializable data structure that holds all the info about a stage,
  * and the inbuilt Java serialization methods.
+ * 
+ * This method is now the primary method of storing stage files.
  * 
  * @author Kelton Finch
  */
@@ -31,12 +33,13 @@ public class StageSerializer {
 	 * A StageInfo2 (the new way) is generated from a StageInfo (the old way) and a GameRunner.
 	 * Obviously, the StageInfo and the GameRunner need to be representing the same stage in order for this to work right.
 	 */
-	public static StageInfo2 generateNewStageInfoFromOld(StageInfo oldInfo, GameRunner game){
+	public static StageInfo generateNewStageInfoFromOld(OldStageInfo oldInfo, GameRunner game){
 		EntitySimulator sim = game.getSim();
+		PlayerEntity player = game.playerEntity;
 		BiHashMap<String, Entity> entityIDs = oldInfo.linkableEntityIDs;
 		List<EntityLink> entityLinks = oldInfo.entityLinks;
 		File nextStage = oldInfo.nextStage;
-		return new StageInfo2(sim, entityIDs, entityLinks, nextStage);
+		return new StageInfo(sim, player, entityIDs, entityLinks, nextStage);
 	}
 	
 	/**
@@ -44,11 +47,11 @@ public class StageSerializer {
 	 * @param stageFile File to read stage from.
 	 * @return A StageInfo read from the given file.
 	 */
-	public static StageInfo2 deserializeStage(File stageFile){
+	public static StageInfo deserializeStage(File stageFile){
 		try {
 			FileInputStream fileIn = new FileInputStream(stageFile);
 			ObjectInputStream in = new ObjectInputStream(fileIn);
-			StageInfo2 result = (StageInfo2) in.readObject();
+			StageInfo result = (StageInfo) in.readObject();
 			in.close();
 			fileIn.close();
 			return result;
@@ -67,7 +70,7 @@ public class StageSerializer {
 	 * @param stage StageInfo to be serialized.
 	 * @param stageFile File to write the stage to.
 	 */
-	public static void serializeStage(StageInfo2 stage, File stageFile){
+	public static void serializeStage(StageInfo stage, File stageFile){
 		FileOutputStream fileOut;
 		try {
 			fileOut = new FileOutputStream(stageFile);

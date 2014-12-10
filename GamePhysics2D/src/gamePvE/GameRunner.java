@@ -22,6 +22,8 @@ import java.util.Queue;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import mapEditor.StageInfo;
+
 public class GameRunner implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
 	
 	public static final Color PLAYER_COLOR = Color.decode("#119999");
@@ -119,8 +121,8 @@ public class GameRunner implements ActionListener, KeyListener, MouseListener, M
 	
 	protected GamePanel display; //JPanel displays the game
 	
-	protected File currentStage; //stage file of current level
-	protected File nextStage; //stage file of next level (specified by current level, null if there is no next level)
+	protected File currentStageFile; //stage file of current level
+	protected File nextStageFile; //stage file of next level (specified by current level, null if there is no next level)
 	
 	private TeraBallFrontEnd parent; //pointer to parent JFrame, allows for view swapping when game over
 	
@@ -208,22 +210,23 @@ public class GameRunner implements ActionListener, KeyListener, MouseListener, M
 	}
 	
 	public File getNextStage(){
-		return nextStage;
+		return nextStageFile;
 	}
 	
 	public void setNextStage(File nextStage){
-		this.nextStage = nextStage;
+		this.nextStageFile = nextStage;
 	}
 	
+	/**
+	 * Loads a stage from file. Also sets the given stage file as the current stage file.
+	 * @param stageFile
+	 */
 	public void loadStage(File stageFile){
-		//TODO: catch here, or propagate one more level up?
-		try {
-			entitySim.clear(); //clear any existing entities
-			MapCoder.decodeMapFile(stageFile, this); //read map file to load new entities
-			currentStage = stageFile;
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found: " + stageFile);
-		}
+		entitySim.clear();
+		currentStageFile = stageFile;
+		StageInfo stage = StageSerializer.deserializeStage(stageFile);
+		stage.loadStage(this);
+		nextStageFile = stage.nextStage;
 	}
 
 	/**
@@ -234,8 +237,15 @@ public class GameRunner implements ActionListener, KeyListener, MouseListener, M
 		gameClock.restart();
 	}
 	
+	/**
+	 * Restarts the current stage.
+	 * Note that the stage file must again be read:
+	 * Rereading from a saved StageInfo would not work because StageInfo refers to the same entities as this GameRunner.
+	 * The entities are (obviously) permuted over the course of the game, so a fresh StageInfo must be read in from file.
+	 * TODO: implement full deep cloning for StageInfo so that a file read is not needed on every game restart.
+	 */
 	public void restartStage(){
-		loadStage(currentStage);
+		loadStage(currentStageFile);
 		restartGameClock();
 		pauseAndMessage("3", new Font(Font.SANS_SERIF,Font.BOLD,40), Color.red, 600);
 		pauseAndMessage("2", new Font(Font.SANS_SERIF,Font.BOLD,40), Color.red, 600);
@@ -243,7 +253,7 @@ public class GameRunner implements ActionListener, KeyListener, MouseListener, M
 	}
 	
 	public void nextStage(){
-		loadStage(nextStage);
+		loadStage(nextStageFile);
 		restartGameClock();
 		pauseAndMessage("3", new Font(Font.SANS_SERIF,Font.BOLD,40), Color.red, 600);
 		pauseAndMessage("2", new Font(Font.SANS_SERIF,Font.BOLD,40), Color.red, 600);
@@ -329,7 +339,7 @@ public class GameRunner implements ActionListener, KeyListener, MouseListener, M
 		
 		//check for player win (due to reaching the exit)
 		if(playerEntity.exited){
-			if(nextStage == null)
+			if(nextStageFile == null)
 				quitToMenu();
 			else
 				nextStage();

@@ -78,7 +78,7 @@ public class TeraBallFrontEnd extends JFrame {
 	}
 	
 	public void loadStage(File stageFile){
-		game.loadStage(stageFile);
+		game.loadStage2(stageFile);
 	}
 	
 	public void startSimulation(){

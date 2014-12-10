@@ -19,7 +19,7 @@ public class StageFileFilter extends FileFilter{
             ext = s.substring(i+1).toLowerCase();
         }
 
-        if(ext != null && ext.equals("tbstage"))
+        if(ext != null && ext.equals("ser"))
         	return true;
         	
         return false;
@@ -27,7 +27,7 @@ public class StageFileFilter extends FileFilter{
 
 	@Override
 	public String getDescription() {
-		return ".tbstage files (and directories) only";
+		return ".ser files (and directories) only";
 	}
 
 }

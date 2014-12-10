@@ -10,6 +10,14 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.SwingUtilities;
 
+/**
+ * Receives and passes on input from the player.
+ * 
+ * This class currently not used.
+ * TODO: remove?
+ * 
+ * @author Kelton Finch
+ */
 public class InputController implements KeyListener, MouseListener, MouseMotionListener {
 
 	protected Point2d mouseLoc;

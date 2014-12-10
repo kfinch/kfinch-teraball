@@ -8,6 +8,7 @@ import gamePhysics2D.ShapeGroup;
 import gamePhysics2D.Vector2d;
 import gamePvE.GameRunner;
 import gamePvE.MapCoder;
+import gamePvE.StageSerializer;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -189,15 +190,10 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 	 * Opens a stage file.
 	 * @param stageFile A File object representing the stage file to open.
 	 */
-	//TODO: separate 'opening the file' and 'reading from the file' to two separate methods
 	public void openStageFile(File stageFile){
-		try {
-			openedFile = stageFile;
-			game = new GameRunner(null);
-			stage = MapCoder.decodeMapFile(openedFile, game);
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found: " + stageFile);
-		}
+		openedFile = stageFile;
+		game = new GameRunner(null);
+		stage = StageSerializer.deserializeStage(stageFile);
 		
 		//centers display on player, then asks for a repaint of the display
 		display.cornerX = game.playerEntity.shapes.xLoc - (display.panelWidth / 2);
@@ -214,13 +210,26 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 	 * @param stageFile A File object representing the stage file to be written to. 
 	 * 					Will overwrite whatever is currently in the file.
 	 */
+	//TODO: will it overwrite properly? test this.
 	public void writeStageFile(File stageFile){
-		try {
-			MapCoder.encodeMapFile(stageFile, stage);
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found: " + stageFile);
-		}
+		StageSerializer.serializeStage(stage, stageFile);
 	}
+	
+	/*
+	 * Temp method to convert my current form of stage file into the new form
+	 */
+	/*public void bootstrapStage(File newStageFile){
+		StageInfo newStage = StageSerializer.generateNewStageInfoFromOld(stage, game);
+		game = new GameRunner(null);
+		newStage.loadStage(game);
+		
+		//centers display on player, then asks for a repaint of the display
+		display.cornerX = game.playerEntity.shapes.xLoc - (display.panelWidth / 2);
+		display.cornerY = game.playerEntity.shapes.yLoc - (display.panelHeight / 2);
+		display.repaint();
+		
+		StageSerializer.serializeStage(newStage, newStageFile);
+	}*/
 
 	/*
 	 * Given a pixel coordinates on the screen, returns the location that corresponds to in the game coordinates.
@@ -353,8 +362,8 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 					}
 				}
 				for(Entity en : selectedEntities){
+					//theoretically this should reflect in both GameRunner and StageInfo. TODO: Keep a careful eye on it.
 					en.shapes.translate(new Vector2d(gameMouseDragStartLoc, gameMouseLoc));
-					stage.entityCodeMap.put(en, MapCoder.encodeEntity(en, stage));
 				}
 			}
 		}

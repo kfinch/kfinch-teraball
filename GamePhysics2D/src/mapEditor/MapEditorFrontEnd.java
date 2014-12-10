@@ -167,20 +167,20 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
 		
 		JButton button;
 		
-		button = new JButton("Beep");
-	    button.setActionCommand("BEEP");
+		button = new JButton("Serialize it!");
+	    button.setActionCommand("beep");
 	    button.setToolTipText("Makes a beep");
 	    button.addActionListener(this);
 	    toolBar.add(button);
 	    
 	    button = new JButton("Boop");
-	    button.setActionCommand("BOOP");
+	    button.setActionCommand("boop");
 	    button.setToolTipText("Makes a boop");
 	    button.addActionListener(this);
 	    toolBar.add(button);
 	    
 	    button = new JButton("Blop");
-	    button.setActionCommand("BLOP");
+	    button.setActionCommand("blop");
 	    button.setToolTipText("Makes a blop");
 	    button.addActionListener(this);
 	    toolBar.add(button);
@@ -192,7 +192,6 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
 			System.exit(0);
 		}
 		else if(e.getActionCommand().equals(OPEN_MAP_STRING)){
-			//editor.openStageFile(new File("mapeditortest.tbstage")); //TODO: remove testing
 			int returnVal = fileChooser.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 	            editor.openStageFile(fileChooser.getSelectedFile());

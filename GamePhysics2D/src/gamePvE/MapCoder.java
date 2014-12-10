@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import mapEditor.EntityLink;
-import mapEditor.StageInfo;
+import mapEditor.OldStageInfo;
 import gamePhysics2D.BoundingAABox;
 import gamePhysics2D.BoundingCircle;
 import gamePhysics2D.BoundingPolygon;
@@ -19,6 +19,12 @@ import gamePhysics2D.Entity;
 import gamePhysics2D.ShapeGroup;
 
 /**
+ * ***** DEPRECATED *****
+ * File I/O is now handled using Java's serialization feature (which I didn't realize existed when I wrote this).
+ * This class is no longer used in any way, and has been replaced by StageSerializer.
+ * I will leave it here for now, as a testament to my shame.
+ * **********************
+ * 
  * This class provides static functions to encode and decode map files.
  * Encoding turns a project in the map editor into a valid map file.
  * Decoding loads a valid map file such that it can be played.
@@ -30,11 +36,11 @@ import gamePhysics2D.ShapeGroup;
  */
 public class MapCoder {
 
-	public static StageInfo decodeMapFile(File fileName, GameRunner game) throws FileNotFoundException{
+	public static OldStageInfo decodeMapFile(File fileName, GameRunner game) throws FileNotFoundException{
 		Scanner sc = new Scanner(fileName);
 		
 		//inits empty stage
-		StageInfo stage = new StageInfo();
+		OldStageInfo stage = new OldStageInfo();
 		
 		//reads in relevant data
 		while(sc.hasNext()){
@@ -60,11 +66,11 @@ public class MapCoder {
 		return stage;
 	}
 	
-	private static void decodeConstants(Scanner sc, StageInfo stage, GameRunner game){
+	private static void decodeConstants(Scanner sc, OldStageInfo stage, GameRunner game){
 		//Constants currently hardcoded in GameSimulator, so this does nothing for now.
 	}
 	
-	private static void decodeMapSize(Scanner sc, StageInfo stage, GameRunner game){
+	private static void decodeMapSize(Scanner sc, OldStageInfo stage, GameRunner game){
 		double edgeThickness = GameRunner.STAGE_WALL_THICKNESS/2;
 		double stageWidth = sc.nextDouble();
 		double stageHeight = sc.nextDouble();
@@ -95,7 +101,7 @@ public class MapCoder {
 		sc.next(); //skips the "END"
 	}
 	
-	private static void decodePlayerStart(Scanner sc, StageInfo stage, GameRunner game){
+	private static void decodePlayerStart(Scanner sc, OldStageInfo stage, GameRunner game){
 		game.playerEntity = new PlayerEntity(sc.nextDouble(), sc.nextDouble(), game.getSim());
 		game.getSim().addEntity(game.playerEntity, "player");
 		stage.player = game.playerEntity;
@@ -103,7 +109,7 @@ public class MapCoder {
 		sc.next(); //skips the "END"
 	}
 	
-	private static void decodeNextStage(Scanner sc, StageInfo stage, GameRunner game){
+	private static void decodeNextStage(Scanner sc, OldStageInfo stage, GameRunner game){
 		String nextStageFileName = sc.next();
 		if(nextStageFileName.equals("NONE"))
 			game.nextStage = null;
@@ -143,7 +149,7 @@ public class MapCoder {
 	 * link [entity1's ID] [entity2's ID]
 	 * fuelpickup [xloc] [yloc]
 	 */
-	private static void decodeEntities(Scanner sc, StageInfo stage, GameRunner game){
+	private static void decodeEntities(Scanner sc, OldStageInfo stage, GameRunner game){
 		Map<Entity, String> entityCodeMap = new HashMap<Entity, String>();
 		
 		String entityString;
@@ -159,7 +165,7 @@ public class MapCoder {
 		stage.entityCodeMap = entityCodeMap;
 	}
 	
-	private static Entity decodeEntity(String line, GameRunner game, StageInfo stage){
+	private static Entity decodeEntity(String line, GameRunner game, OldStageInfo stage){
 		Scanner sc = new Scanner(line);
 		String type = sc.next();
 		if(type.equals("END")){
@@ -441,7 +447,7 @@ public class MapCoder {
 	}
 	
 	
-	public static void encodeMapFile(File fileName, StageInfo stage) throws FileNotFoundException{
+	public static void encodeMapFile(File fileName, OldStageInfo stage) throws FileNotFoundException{
 		PrintWriter writer = new PrintWriter(fileName);
 
 		encodeConstants(writer, stage);
@@ -453,23 +459,23 @@ public class MapCoder {
 		writer.close();
 	}
 	
-	private static void encodeConstants(PrintWriter writer, StageInfo stage){
+	private static void encodeConstants(PrintWriter writer, OldStageInfo stage){
 		//TODO: Implement. Constants currently hard coded.
 	}
 	
-	private static void encodeMapSize(PrintWriter writer, StageInfo stage){
+	private static void encodeMapSize(PrintWriter writer, OldStageInfo stage){
 		writer.println("MAP_SIZE");
 		writer.println(stage.stageWidth + " " + stage.stageHeight);
 		writer.println("END");
 	}
 	
-	private static void encodePlayerStart(PrintWriter writer, StageInfo stage){
+	private static void encodePlayerStart(PrintWriter writer, OldStageInfo stage){
 		writer.println("PLAYER_START");
 		writer.println(stage.player.shapes.xLoc + " " + stage.player.shapes.yLoc);
 		writer.println("END");
 	}
 	
-	private static void encodeEntities(PrintWriter writer, StageInfo stage){
+	private static void encodeEntities(PrintWriter writer, OldStageInfo stage){
 		writer.println("ENTITIES");
 		for(String e : stage.entityCodeMap.values()){
 			writer.println(e);
@@ -480,7 +486,7 @@ public class MapCoder {
 		writer.println("END");
 	}
 
-	private static void encodeNextStage(PrintWriter writer, StageInfo stage){
+	private static void encodeNextStage(PrintWriter writer, OldStageInfo stage){
 		if(stage.nextStage == null)
 			return;
 		
@@ -495,7 +501,7 @@ public class MapCoder {
 	 * @param e Entity to be encoded
 	 * @return A string that could specify the entity in a stage file
 	 */
-	public static String encodeEntity(Entity e, StageInfo stage){
+	public static String encodeEntity(Entity e, OldStageInfo stage){
 		if(e instanceof TerrainEntity){
 			return "terrain " + encodeShapes(e.shapes);
 		}

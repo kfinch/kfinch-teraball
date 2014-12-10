@@ -10,6 +10,8 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import mapEditor.MapEditorRunner;
+import mapEditor.OldStageInfo;
 import mapEditor.StageInfo;
 import gamePhysics2D.BoundingAABox;
 import gamePhysics2D.BoundingCircle;
@@ -27,7 +29,7 @@ import gamePvE.MapCoder;
 public class CaseTester {
 
 	public static void main(String args[]){
-		serializeTest();
+		converterino();
 	}
 	
 	private static void test1(){
@@ -106,7 +108,7 @@ public class CaseTester {
 	
 	private static void serializeTest(){
 		try {
-			StageInfo stage = MapCoder.decodeMapFile(new File("mapeditortest.tbstage"), new GameRunner(null));
+			OldStageInfo stage = MapCoder.decodeMapFile(new File("mapeditortest.tbstage"), new GameRunner(null));
 			FileOutputStream fileOut = new FileOutputStream("serializetest.ser");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 	        out.writeObject(stage);
@@ -117,7 +119,7 @@ public class CaseTester {
 	        
 	        FileInputStream fileIn = new FileInputStream("serializetest.ser");
 	        ObjectInputStream in = new ObjectInputStream(fileIn);
-	        StageInfo sameStage = (StageInfo) in.readObject();
+	        OldStageInfo sameStage = (OldStageInfo) in.readObject();
 	        in.close();
 	        fileIn.close();
 	        
@@ -131,5 +133,13 @@ public class CaseTester {
 		} catch (ClassNotFoundException e) {
 			System.out.println("WHERE IS MY CLASS");
 		}
+	}
+	
+	private static void converterino(){
+		MapEditorRunner mer = new MapEditorRunner();
+		mer.openStageFile(new File("stage1.tbstage"));
+		mer.bootstrapStage(new File("stage1.ser"));
+		mer.openStageFile(new File("stage2.tbstage"));
+		mer.bootstrapStage(new File("stage2.ser"));
 	}
 }
