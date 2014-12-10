@@ -81,12 +81,29 @@ public abstract class TogglableEntity extends Entity {
 		updateState();
 	}
 	
+	/*
+	 * Behavior is undefined if you remove all the buttons (but it shouldn't crash)
+	 */
+	public boolean removeButton(ButtonEntity button){
+		boolean result = buttons.remove(button);
+		updateState();
+		return result;
+	}
+	
 	@Override
-	public void link(Entity e){
+	public void addLink(Entity e){
 		if(e instanceof ButtonEntity)
 			addButton((ButtonEntity) e);
 		else
-			super.link(e);
+			super.addLink(e);
+	}
+	
+	@Override
+	public boolean removeLink(Entity e){
+		if(e instanceof ButtonEntity)
+			return removeButton((ButtonEntity) e);
+		else
+			return super.removeLink(e);
 	}
 	
 	@Override

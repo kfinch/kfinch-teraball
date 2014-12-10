@@ -94,11 +94,20 @@ public class KeyedLevelExitEntity extends Entity {
 	}
 	
 	@Override
-	public void link(Entity e){
+	public void addLink(Entity e){
 		if(e instanceof KeyEntity)
 			addKey((KeyEntity)e);
 		else
-			super.link(e);
+			super.addLink(e);
+	}
+	
+	@Override
+	public boolean removeLink(Entity e){
+		if(e instanceof KeyEntity)
+			//TODO: make key links removable, for the sake of the map editor
+			return false; //key links cannot be removed
+		else
+			return super.removeLink(e);
 	}
 	
 	@Override
@@ -148,11 +157,19 @@ class KeyEntity extends Entity {
 	}
 
 	@Override
-	public void link(Entity e){
+	public void addLink(Entity e){
 		if(e instanceof KeyedLevelExitEntity)
-			e.link(this);
+			e.addLink(this);
 		else
-			super.link(e);
+			super.addLink(e);
+	}
+	
+	@Override
+	public boolean removeLink(Entity e){
+		if(e instanceof KeyedLevelExitEntity)
+			return e.removeLink(this);
+		else
+			return super.removeLink(e);
 	}
 	
 	@Override

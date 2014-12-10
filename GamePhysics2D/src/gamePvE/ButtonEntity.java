@@ -49,11 +49,19 @@ public class ButtonEntity extends Entity {
 	}
 
 	@Override
-	public void link(Entity e){
+	public void addLink(Entity e){
 		if(e instanceof TogglableEntity)
-			e.link(this);
+			e.addLink(this);
 		else
-			super.link(e);
+			super.addLink(e);
+	}
+	
+	@Override
+	public boolean removeLink(Entity e){
+		if(e instanceof TogglableEntity)
+			return e.removeLink(this);
+		else
+			return super.removeLink(e);
 	}
 	
 	@Override
