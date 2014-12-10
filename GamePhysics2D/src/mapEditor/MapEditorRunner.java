@@ -59,6 +59,10 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 	
 	protected int userState; //tracks what the user is doing, see the integer constants above.
 	
+	//TODO: implement snap to grid in a sensible way
+	protected boolean isSnapToGridOn; //tracks if snap to grid is on.
+	protected double snapToGrid; //spacing of "snap to grid" feature.
+	
 	public MapEditorRunner(){
 		game = new GameRunner(null); //can leave parent null, because methods that use it won't be called
 		
@@ -70,6 +74,9 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 		mouseDragStartLoc = new Point2d(0,0);
 		
 		userState = MANIPULATOR_TOOL;
+		
+		isSnapToGridOn = false;
+		snapToGrid = 10;
 	}
 	
 	/*
@@ -196,14 +203,19 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 		stage = StageSerializer.deserializeStage(stageFile);
 		stage.loadStage(game);
 		
-		//centers display on player, then asks for a repaint of the display
+		//centers display on player, goes to default zoom, then asks for a repaint of the display
 		display.cornerX = game.playerEntity.shapes.xLoc - (display.panelWidth / 2);
 		display.cornerY = game.playerEntity.shapes.yLoc - (display.panelHeight / 2);
+		display.zoom = 1;
 		display.repaint();
 	}
 	
 	public void saveStageFile(){
 		writeStageFile(openedFile);
+	}
+	
+	public void saveAsStageFile(File newFile){
+		writeStageFile(newFile);
 	}
 	
 	/**
