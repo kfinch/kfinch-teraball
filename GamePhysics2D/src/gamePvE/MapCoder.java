@@ -112,11 +112,11 @@ public class MapCoder {
 	private static void decodeNextStage(Scanner sc, OldStageInfo stage, GameRunner game){
 		String nextStageFileName = sc.next();
 		if(nextStageFileName.equals("NONE"))
-			game.nextStage = null;
+			game.nextStageFile = null;
 		else
-			game.nextStage = new File(nextStageFileName);
+			game.nextStageFile = new File(nextStageFileName);
 		
-		stage.nextStage = game.nextStage;
+		stage.nextStage = game.nextStageFile;
 		
 		sc.next(); //skips the "END"
 	}

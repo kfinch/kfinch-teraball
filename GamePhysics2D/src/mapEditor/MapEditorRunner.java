@@ -194,6 +194,7 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 		openedFile = stageFile;
 		game = new GameRunner(null);
 		stage = StageSerializer.deserializeStage(stageFile);
+		stage.loadStage(game);
 		
 		//centers display on player, then asks for a repaint of the display
 		display.cornerX = game.playerEntity.shapes.xLoc - (display.panelWidth / 2);
@@ -216,20 +217,19 @@ public class MapEditorRunner implements MouseListener, MouseMotionListener, Mous
 	}
 	
 	/*
-	 * Temp method to convert my current form of stage file into the new form
+	 * Temp method to convert current form of stage file into the new form
 	 */
-	/*public void bootstrapStage(File newStageFile){
-		StageInfo newStage = StageSerializer.generateNewStageInfoFromOld(stage, game);
-		game = new GameRunner(null);
-		newStage.loadStage(game);
-		
-		//centers display on player, then asks for a repaint of the display
-		display.cornerX = game.playerEntity.shapes.xLoc - (display.panelWidth / 2);
-		display.cornerY = game.playerEntity.shapes.yLoc - (display.panelHeight / 2);
-		display.repaint();
-		
-		StageSerializer.serializeStage(newStage, newStageFile);
-	}*/
+	public void bootstrapStage(File oldStageFile, File newStageFile){
+		try {
+			OldStageInfo oldStage = MapCoder.decodeMapFile(oldStageFile, game);
+			StageInfo newStage = StageSerializer.generateNewStageInfoFromOld(oldStage, game);
+			game = new GameRunner(null);
+			newStage.loadStage(game);
+			StageSerializer.serializeStage(newStage, newStageFile);
+		} catch (FileNotFoundException e) {
+			System.out.println("file not found");
+		}
+	}
 
 	/*
 	 * Given a pixel coordinates on the screen, returns the location that corresponds to in the game coordinates.

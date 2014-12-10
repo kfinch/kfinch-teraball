@@ -137,9 +137,10 @@ public class CaseTester {
 	
 	private static void converterino(){
 		MapEditorRunner mer = new MapEditorRunner();
-		mer.openStageFile(new File("stage1.tbstage"));
-		mer.bootstrapStage(new File("stage1.ser"));
-		mer.openStageFile(new File("stage2.tbstage"));
-		mer.bootstrapStage(new File("stage2.ser"));
+		mer.bootstrapStage(new File("stage1.tbstage"), new File("stage1.ser"));
+		mer = new MapEditorRunner();
+		mer.bootstrapStage(new File("stage2.tbstage"), new File("stage2.ser"));
+		mer = new MapEditorRunner();
+		mer.bootstrapStage(new File("mapeditortest.tbstage"), new File("mapeditortest.ser"));
 	}
 }

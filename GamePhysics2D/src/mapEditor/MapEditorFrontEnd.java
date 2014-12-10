@@ -1,6 +1,7 @@
 package mapEditor;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -28,6 +29,10 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
 	private static final String CUT_COMMAND_STRING = "Cut";
 	private static final String COPY_COMMAND_STRING = "Copy";
 	private static final String PASTE_COMMAND_STRING = "Paste";
+	
+	private static final String SET_NEXT_STAGE_STRING = "Set Next Stage";
+	private static final String SET_PLAYER_START_STRING = "Set Player Start Location";
+	private static final String SET_STAGE_SIZE_STRING = "Set Stage Size";
 	
 	private MapEditorRunner editor;
 	private MapEditorPanel editorPanel;
@@ -64,7 +69,7 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
 		
 		//initialize tool bar
 		createToolBar();
-		add(toolBar, BorderLayout.SOUTH);
+		add(toolBar, BorderLayout.WEST);
 	}
 	
 	private JMenuBar createMenuBar(){
@@ -143,6 +148,24 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
         menu.add(menuItem);
         menuItem.addActionListener(this);
  
+        //Build the stage menu.
+        menu = new JMenu("Stage");
+        menuBar.add(menu);
+        
+        //Build the stage menu's items
+        menuItem = new JMenuItem(SET_NEXT_STAGE_STRING);
+        menu.add(menuItem);
+        menuItem.addActionListener(this);
+        
+        menuItem = new JMenuItem(SET_PLAYER_START_STRING);
+        menu.add(menuItem);
+        menuItem.addActionListener(this);
+        
+        menuItem = new JMenuItem(SET_STAGE_SIZE_STRING);
+        menu.add(menuItem);
+        menuItem.addActionListener(this);
+        
+        
         /*
         //a submenu
         menu.addSeparator();
@@ -163,11 +186,12 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
 	}
 	
 	private void createToolBar(){
-		toolBar = new JToolBar();
+		toolBar = new JToolBar(JToolBar.VERTICAL);
+		toolBar.setBackground(Color.decode("#bbbbbb"));
 		
 		JButton button;
 		
-		button = new JButton("Serialize it!");
+		button = new JButton("Beep");
 	    button.setActionCommand("beep");
 	    button.setToolTipText("Makes a beep");
 	    button.addActionListener(this);
@@ -188,9 +212,8 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals(EXIT_EDITOR_STRING)){
-			System.exit(0);
-		}
+		//file menu
+		if(e.getActionCommand().equals(NEW_MAP_STRING)){}
 		else if(e.getActionCommand().equals(OPEN_MAP_STRING)){
 			int returnVal = fileChooser.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
@@ -199,6 +222,24 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
 		else if(e.getActionCommand().equals(SAVE_MAP_STRING)){
 			editor.saveStageFile();
 		}
+		else if(e.getActionCommand().equals(EXIT_EDITOR_STRING)){
+			System.exit(0);
+		}
+		//edit menu
+		if(e.getActionCommand().equals(UNDO_COMMAND_STRING)){}
+		if(e.getActionCommand().equals(REDO_COMMAND_STRING)){}
+		if(e.getActionCommand().equals(CUT_COMMAND_STRING)){}
+		if(e.getActionCommand().equals(COPY_COMMAND_STRING)){}
+		if(e.getActionCommand().equals(PASTE_COMMAND_STRING)){}
+		//stage menu
+		if(e.getActionCommand().equals(SET_NEXT_STAGE_STRING)){
+			//TODO: this method of doing it may make it care about the *absolute* path of next stage, which is wrong
+			int returnVal = fileChooser.showOpenDialog(this);
+			if (returnVal == JFileChooser.APPROVE_OPTION)
+	            editor.stage.nextStage = fileChooser.getSelectedFile();
+		}
+		if(e.getActionCommand().equals(SET_PLAYER_START_STRING)){}
+		if(e.getActionCommand().equals(SET_STAGE_SIZE_STRING)){}
 	}
 
 	public static void main(String[] args) {
