@@ -2,6 +2,13 @@ package gamePhysics2D;
 
 import java.awt.Graphics2D;
 
+/**
+ * Class handles painting given shapes to the graphics context.
+ * 
+ * Currently this class is unused, its function is handled by ShapeGroup.
+ * 
+ * @author Kelton Finch
+ */
 public class ShapePainter {
 
 	public static void paintShape(BoundingShape shape, Graphics2D g2d, int xoffset, int yoffset, double scale){
