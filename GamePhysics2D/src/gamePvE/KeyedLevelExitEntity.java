@@ -68,6 +68,11 @@ public class KeyedLevelExitEntity extends Entity {
 		return new ShapeGroup(new BoundingPolygon(xLoc, yLoc, np, xp, yp), GameRunner.EXIT_COLOR);
 	}
 	
+	public KeyedLevelExitEntity deepCopy(){
+		//doesn't copy linked keys at all
+		return new KeyedLevelExitEntity(shapes.deepCopy(), maxKeys, new KeyEntity[maxKeys], new ShapeGroup[maxKeys]);
+	}
+	
 	protected static ShapeGroup generateDefaultKeyShapes(double xLoc, double yLoc, Color color){
 		List<BoundingShape> resultList = new ArrayList<BoundingShape>(2);
 		
@@ -156,6 +161,11 @@ class KeyEntity extends Entity {
 		this(KeyedLevelExitEntity.generateDefaultKeyShapes(xLoc, yLoc, color), color);
 	}
 
+	@Override
+	public KeyEntity deepCopy(){
+		return new KeyEntity(shapes.deepCopy(), color);
+	}
+	
 	@Override
 	public void addLink(Entity e){
 		if(e instanceof KeyedLevelExitEntity)

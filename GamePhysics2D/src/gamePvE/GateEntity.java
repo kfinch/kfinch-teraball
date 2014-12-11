@@ -35,6 +35,11 @@ public class GateEntity extends TogglableEntity {
 		this(shapes, mode, GameRunner.CLOSED_GATE_COLOR, GameRunner.OPEN_GATE_COLOR, invert);
 	}
 	
+	@Override
+	public GateEntity deepCopy(){
+		return new GateEntity(shapes.deepCopy(), getMode(), closedColor, openColor, invert);
+	}
+	
 	public boolean isInverted(){
 		return invert;
 	}

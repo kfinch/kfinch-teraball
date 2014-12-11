@@ -95,7 +95,7 @@ public class BoundingLineSegment extends BoundingShape{
 	}
 
 	@Override
-	public Object clone() {
+	public BoundingShape deepCopy() {
 		return new BoundingLineSegment(x1, y1, x2, y2);
 	}
 

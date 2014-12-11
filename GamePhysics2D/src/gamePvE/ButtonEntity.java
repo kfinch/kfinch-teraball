@@ -44,6 +44,11 @@ public class ButtonEntity extends Entity {
 		return new ShapeGroup(new BoundingCircle(xLoc, yLoc, GameRunner.BUTTON_SIZE));
 	}
 	
+	@Override
+	public ButtonEntity deepCopy(){
+		return new ButtonEntity(shapes.deepCopy(), onColor, offColor, mode);
+	}
+	
 	public int getMode(){
 		return mode;
 	}

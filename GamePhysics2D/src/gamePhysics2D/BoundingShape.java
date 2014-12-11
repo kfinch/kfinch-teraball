@@ -16,7 +16,7 @@ import java.util.Set;
  * 
  * @author Kelton Finch
  */
-public abstract class BoundingShape implements Cloneable, Serializable {
+public abstract class BoundingShape implements Serializable {
 
 	private static final long serialVersionUID = 4845081091663797619L;
 	
@@ -30,8 +30,7 @@ public abstract class BoundingShape implements Cloneable, Serializable {
 	
 	public abstract List<Point2d> getPoints();
 	
-	@Override
-	public abstract Object clone();
+	public abstract BoundingShape deepCopy();
 	
 	/**
 	 * Sets size of axis aligned bounding box

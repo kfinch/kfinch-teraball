@@ -110,7 +110,7 @@ public class BoundingPolygon extends BoundingShape {
 	}
 
 	@Override
-	public Object clone() {
+	public BoundingShape deepCopy() {
 		return new BoundingPolygon(xLoc, yLoc, nPoints, Arrays.copyOf(xPoints, xPoints.length),
 				                   Arrays.copyOf(yPoints, yPoints.length));
 	}

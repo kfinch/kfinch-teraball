@@ -130,6 +130,10 @@ public class PlayerEntity extends PhysicsEntity {
                                          GameRunner.ENEMY_SHOT_COLOR);
 		
 	}
+	
+	public Entity deepCopy(){
+		throw new UnsupportedOperationException("The player cannot be deep-copied. THERE CAN ONLY BE ONE");
+	}
 
 	public void damagePlayer(double damage, Vector2d knockback){
 		currHealth -= damage;
@@ -338,6 +342,11 @@ class PlayerShieldEntity extends Entity {
 		shapeList.add(piece2);
 		
 		return new ShapeGroup(shapeList, GameRunner.PLAYER_SHIELD_COLOR);
+	}
+	
+	@Override
+	public Entity deepCopy(){
+		throw new UnsupportedOperationException("can't deep copy player shields. THERE CAN ONLY BE ONE.");
 	}
 	
 	public void updateLocation(){

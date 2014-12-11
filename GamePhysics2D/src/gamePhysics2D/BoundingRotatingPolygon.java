@@ -53,7 +53,7 @@ public class BoundingRotatingPolygon extends BoundingPolygon {
 	}
 	
 	@Override
-	public Object clone(){
+	public BoundingShape deepCopy() {
 		BoundingRotatingPolygon result =
 				new BoundingRotatingPolygon(xLoc, yLoc, nPoints, Arrays.copyOf(xPoints, xPoints.length),
 						                    Arrays.copyOf(yPoints, yPoints.length));

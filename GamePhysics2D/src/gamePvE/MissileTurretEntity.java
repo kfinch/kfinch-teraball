@@ -26,8 +26,7 @@ public class MissileTurretEntity extends Entity{
 	
 	private EntityAdder adder;
 	
-	public MissileTurretEntity(ShapeGroup shapes, ShapeGroup detail, 
-			                   int missileCD, EntityAdder adder){
+	public MissileTurretEntity(ShapeGroup shapes, int missileCD, EntityAdder adder){
 		super(shapes, "gunturret");
 		addTag("solidimmovable");
 		this.missileCD = missileCD;
@@ -36,7 +35,7 @@ public class MissileTurretEntity extends Entity{
 	}
 	
 	public MissileTurretEntity(double xLoc, double yLoc, EntityAdder adder){
-		this(generateDefaultShapes(xLoc, yLoc), null, GameRunner.TURRET_MISSILE_CD, adder);
+		this(generateDefaultShapes(xLoc, yLoc), GameRunner.TURRET_MISSILE_CD, adder);
 	}
 	
 	private static ShapeGroup generateDefaultShapes(double xLoc, double yLoc){
@@ -45,6 +44,13 @@ public class MissileTurretEntity extends Entity{
 		double yp[] = {15,5,0,-5,-15,-5,0,5};
 		int np = 8;
 		result.add(new BoundingPolygon(xLoc, yLoc, np, xp, yp), Color.black);
+		return result;
+	}
+	
+	public MissileTurretEntity deepCopy(){
+		//the adder isn't copied, but it doesn't need to be (and shouldn't)
+		MissileTurretEntity result = new MissileTurretEntity(shapes.deepCopy(), missileCD, adder);
+		result.setLOS(new LineOfSightEntity(result, los.dst));
 		return result;
 	}
 	
@@ -139,6 +145,11 @@ class MissileEntity extends DynamicEntity {
 		return result;
 	}
 
+	@Override
+	public Entity deepCopy(){
+		throw new UnsupportedOperationException("Can't clone missile turret projectiles!");
+	}
+	
 	@Override
 	public void preStep(){
 		Vector2d targetVector = new Vector2d(target.shapes.xLoc - shapes.xLoc, target.shapes.yLoc - shapes.yLoc);

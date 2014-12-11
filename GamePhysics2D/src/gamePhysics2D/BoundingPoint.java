@@ -46,7 +46,7 @@ public class BoundingPoint extends BoundingShape{
 	}
 
 	@Override
-	public Object clone() {
+	public BoundingShape deepCopy() {
 		return new BoundingPoint(xLoc, yLoc);
 	}
 	

@@ -66,7 +66,7 @@ public class BoundingCircle extends BoundingShape{
 	}
 
 	@Override
-	public Object clone() {
+	public BoundingShape deepCopy() {
 		return new BoundingCircle(xLoc, yLoc, radius);
 	}
 

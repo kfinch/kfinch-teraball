@@ -53,6 +53,13 @@ public class ShapeGroup implements Serializable {
 		this(shape, null);
 	}
 	
+	public ShapeGroup deepCopy(){
+		List<ColoredShape> newColoredShapes = new ArrayList<ColoredShape>(coloredShapes.size());
+		for(ColoredShape cs : coloredShapes)
+			newColoredShapes.add(cs.deepCopy());
+		return new ShapeGroup(newColoredShapes);
+	}
+	
 	/**
 	 * Updates the location and bounds of the ShapeGroup.
 	 * These values are automatically updated when the ShapeGroup is permuted via its own methods,
@@ -338,11 +345,19 @@ public class ShapeGroup implements Serializable {
 }
 
 class ColoredShape implements Serializable {
+	
 	private static final long serialVersionUID = -3916354297641122196L;
+	
 	public BoundingShape shape;
 	 public Color color;
+	 
 	 public ColoredShape(BoundingShape shape, Color color){
 		 this.shape = shape;
 		 this.color = color;
+	 }
+	 
+	 public ColoredShape deepCopy(){
+		 return new ColoredShape(shape.deepCopy(),
+				                 new Color(color.getRed(), color.getBlue(), color.getGreen(), color.getAlpha()));
 	 }
 }

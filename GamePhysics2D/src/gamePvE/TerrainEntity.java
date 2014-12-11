@@ -8,12 +8,17 @@ public class TerrainEntity extends Entity {
 	
 	private static final long serialVersionUID = 8496900945587301602L;
 
-	public TerrainEntity(ShapeGroup sg) {
-		super(sg, "terrain");
-		sg.setColor(GameRunner.TERRAIN_COLOR);
+	public TerrainEntity(ShapeGroup shapes) {
+		super(shapes, "terrain");
+		shapes.setColor(GameRunner.TERRAIN_COLOR);
 		addTag("solidimmovable");
 	}
 
+	@Override
+	public TerrainEntity deepCopy(){
+		return new TerrainEntity(shapes.deepCopy());
+	}
+	
 	@Override
 	public void preStep() {}
 	

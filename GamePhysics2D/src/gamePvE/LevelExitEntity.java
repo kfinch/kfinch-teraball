@@ -24,6 +24,11 @@ public class LevelExitEntity extends Entity {
 		int np = 5;
 		return new ShapeGroup(new BoundingPolygon(xLoc, yLoc, np, xp, yp), GameRunner.EXIT_COLOR);
 	}
+	
+	@Override
+	public LevelExitEntity deepCopy(){
+		return new LevelExitEntity(shapes.deepCopy());
+	}
 
 	@Override
 	public void preStep() {}

@@ -28,6 +28,11 @@ public class FuelPickupEntity extends Entity {
 		return new ShapeGroup(new BoundingAABox(xLoc, yLoc, GameRunner.FUELPICKUP_XSIZE,
 				                                GameRunner.FUELPICKUP_YSIZE), GameRunner.FUELPICKUP_COLOR);
 	}
+	
+	@Override
+	public FuelPickupEntity deepCopy(){
+		return new FuelPickupEntity(shapes.deepCopy(), value);
+	}
 
 	public int getValue(){
 		return value;

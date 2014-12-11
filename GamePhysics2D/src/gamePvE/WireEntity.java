@@ -32,6 +32,11 @@ public class WireEntity extends TogglableEntity {
 		this(shapes, mode, GameRunner.OFF_WIRE_COLOR, GameRunner.ON_WIRE_COLOR, invert);
 	}
 	
+	@Override
+	public WireEntity deepCopy(){
+		return new WireEntity(shapes.deepCopy(), getMode(), offColor, onColor, invert);
+	}
+	
 	public boolean isInverted(){
 		return invert;
 	}

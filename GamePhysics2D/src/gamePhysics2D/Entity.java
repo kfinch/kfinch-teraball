@@ -23,6 +23,8 @@ public abstract class Entity implements Serializable {
 	public boolean isActive;
 	
 	
+	public Entity(){}
+	
 	public Entity(ShapeGroup shapes, Set<String> tags){
 		this.shapes = shapes;
 		this.tags = tags;
@@ -35,6 +37,28 @@ public abstract class Entity implements Serializable {
 		tags.add(tag);
 		isActive = true;
 	}
+	
+	/*
+	 * Helper for deep copy.
+	 * TODO: do I really need this?
+	 */
+	protected void copyDefaultFields(Entity e){
+		shapes = e.shapes.deepCopy();
+		
+		tags = new HashSet<String>();
+		for(String tag : e.tags)
+			tags.add(tag); //String is immutable, so this is effectively a deep copy
+		
+		isActive = e.isActive;
+	}
+	
+	/**
+	 * Generates and returns a deep copy of this Entity.
+	 * "state" variables need not be copied, but everything else must.
+	 * Links should NOT be copied.
+	 * @return A 'deep copy' (fields are copied too) of this Entity.
+	 */
+	public abstract Entity deepCopy();
 
 	/**
 	 * Adds a "tag" to this entity.

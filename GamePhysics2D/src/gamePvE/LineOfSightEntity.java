@@ -28,6 +28,10 @@ public class LineOfSightEntity extends Entity{
 		hasLOS = true;
 	}
 	
+	public Entity deepCopy(){
+		throw new UnsupportedOperationException("can't deep copy LoS Entity");
+	}
+	
 	public double angle(){
 		return Math.atan2(losLine.y2-losLine.y1, losLine.x2-losLine.x1);
 	}

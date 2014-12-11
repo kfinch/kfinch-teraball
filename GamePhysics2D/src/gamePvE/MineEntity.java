@@ -81,6 +81,11 @@ public class MineEntity extends Entity {
 	}
 
 	@Override
+	public MineEntity deepCopy(){
+		return new MineEntity(shapes.deepCopy(), damage, knockback);
+	}
+	
+	@Override
 	public void preStep() {}
 	
 	@Override

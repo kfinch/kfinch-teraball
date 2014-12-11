@@ -47,6 +47,11 @@ public class ExplosionEntity extends Entity {
 			throw new IllegalArgumentException("unrecognized explosion kind: " + kind);
 		}
 	}
+	
+	@Override
+	public Entity deepCopy(){
+		throw new UnsupportedOperationException("ExplosionEntity isn't deep copyable (it's basically one big state effect)");
+	}
 
 	@Override
 	public void preStep() {

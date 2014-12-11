@@ -76,7 +76,7 @@ public class BoundingAABox extends BoundingShape {
 	}
 
 	@Override
-	public Object clone() {
+	public BoundingShape deepCopy() {
 		return new BoundingAABox(xLoc, yLoc, xBound, yBound);
 	}
 

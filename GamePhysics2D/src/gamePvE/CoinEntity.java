@@ -24,6 +24,10 @@ public class CoinEntity extends Entity {
 		return new ShapeGroup(new BoundingCircle(xLoc, yLoc, size), GameRunner.COIN_COLOR);
 	}
 
+	public CoinEntity deepCopy(){
+		return new CoinEntity(shapes.deepCopy(), value);
+	}
+	
 	public int getValue(){
 		return value;
 	}

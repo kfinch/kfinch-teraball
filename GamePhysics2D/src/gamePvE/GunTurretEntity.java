@@ -1,6 +1,7 @@
 package gamePvE;
 
 import java.awt.Color;
+
 import gamePhysics2D.BoundingCircle;
 import gamePhysics2D.BoundingRotatingPolygon;
 import gamePhysics2D.DynamicEntity;
@@ -44,6 +45,13 @@ public class GunTurretEntity extends Entity {
 		double yp[] = {3,7,10,10,-10,-10,-7,-3};
 		int np = 8;
 		result.add(new BoundingRotatingPolygon(xLoc, yLoc, np, xp, yp), Color.black);
+		return result;
+	}
+	
+	public GunTurretEntity deepCopy(){
+		//the adder isn't copied, but it doesn't need to be (and shouldn't)
+		GunTurretEntity result = new GunTurretEntity(shapes.deepCopy(), turningSpeed, gunCD, adder);
+		result.setLOS(new LineOfSightEntity(result, los.dst));
 		return result;
 	}
 	
@@ -137,6 +145,11 @@ class GunTurretProjectileEntity extends DynamicEntity {
 	private static ShapeGroup generateDefaultShapes(double xLoc, double yLoc){
 		return new ShapeGroup(new BoundingCircle(xLoc, yLoc, GameRunner.TURRET_SHOT_SIZE),
 				              GameRunner.ENEMY_SHOT_COLOR);
+	}
+	
+	@Override
+	public Entity deepCopy(){
+		throw new UnsupportedOperationException("Can't deep copy gun turret shots.. (they're all state)");
 	}
 
 	@Override

@@ -25,6 +25,11 @@ public class LineOfSightEntity2 extends Entity {
 		this(src, dst, Color.red);
 	}
 	
+	@Override
+	public Entity deepCopy(){
+		throw new UnsupportedOperationException("Can't deep copy LOS2 Entity");
+	}
+	
 	public void setStart(Point2d start){
 		ray.s = start;
 	}
