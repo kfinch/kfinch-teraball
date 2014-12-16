@@ -33,7 +33,10 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
 	private static final String COPY_COMMAND_STRING = "Copy";
 	private static final String PASTE_COMMAND_STRING = "Paste";
 	
-	private static final String SNAP_TO_GRID_STRING = "Snap to Grid";
+	private static final String MANIPULATOR_TOOL_STRING = "Manipulator Tool";
+	private static final String ADD_TERRAIN_STRING = "Add Terrain";
+	private static final String ADD_MINE_STRING = "Add Mine";
+	
 	private static final String SNAP_TO_GRID_OFF_STRING = "snaptogridoff";
 	private static final String SNAP_TO_GRID_5_STRING = "snaptogrid5";
 	private static final String SNAP_TO_GRID_10_STRING = "snaptogrid10";
@@ -166,6 +169,22 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
         menu.add(menuItem);
         menuItem.addActionListener(this);
  
+        //Build the tools menu.
+        menu = new JMenu("Tools");
+        menuBar.add(menu);
+        
+        menuItem = new JMenuItem(MANIPULATOR_TOOL_STRING);
+        menu.add(menuItem);
+        menuItem.addActionListener(this);
+        
+        menuItem = new JMenuItem(ADD_TERRAIN_STRING);
+        menu.add(menuItem);
+        menuItem.addActionListener(this);
+        
+        menuItem = new JMenuItem(ADD_MINE_STRING);
+        menu.add(menuItem);
+        menuItem.addActionListener(this);
+        
         //Build the stage menu.
         menu = new JMenu("Stage");
         menuBar.add(menu);
@@ -174,6 +193,7 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
         
         //Build the snap to grid submenu
         submenu = new JMenu("Snap to grid...");
+        menu.add(submenu);
         
         ButtonGroup group = new ButtonGroup();
         
@@ -208,8 +228,6 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
         group.add(rbMenuItem);
         submenu.add(rbMenuItem);
         
-        menu.add(submenu);
-        
         menu.addSeparator();
         
         menuItem = new JMenuItem(SET_NEXT_STAGE_STRING);
@@ -223,23 +241,6 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
         menuItem = new JMenuItem(SET_STAGE_SIZE_STRING);
         menu.add(menuItem);
         menuItem.addActionListener(this);
-        
-        
-        /*
-        //a submenu
-        menu.addSeparator();
-        submenu = new JMenu("A submenu");
-        submenu.setMnemonic(KeyEvent.VK_S);
- 
-        menuItem = new JMenuItem("An item in the submenu");
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_2, ActionEvent.ALT_MASK));
-        submenu.add(menuItem);
- 
-        menuItem = new JMenuItem("Another item");
-        submenu.add(menuItem);
-        menu.add(submenu);
-        */
         
         return menuBar;
 	}
@@ -303,11 +304,34 @@ public class MapEditorFrontEnd extends JFrame implements ActionListener {
 		if(e.getActionCommand().equals(CUT_COMMAND_STRING)){}
 		if(e.getActionCommand().equals(COPY_COMMAND_STRING)){}
 		if(e.getActionCommand().equals(PASTE_COMMAND_STRING)){}
+		//tool menu
+		if(e.getActionCommand().equals(MANIPULATOR_TOOL_STRING)){
+			editor.switchToManipulatorTool();
+		}
+		if(e.getActionCommand().equals(ADD_TERRAIN_STRING)){}
+		if(e.getActionCommand().equals(ADD_MINE_STRING)){
+			editor.placeMineEntity();
+		}
 		//stage menu
-		if(e.getActionCommand().equals(SNAP_TO_GRID_5_STRING)){}
-		if(e.getActionCommand().equals(SNAP_TO_GRID_10_STRING)){}
-		if(e.getActionCommand().equals(SNAP_TO_GRID_25_STRING)){}
-		if(e.getActionCommand().equals(SNAP_TO_GRID_50_STRING)){}
+		if(e.getActionCommand().equals(SNAP_TO_GRID_OFF_STRING)){
+			editor.isSnapToGridOn = false;
+		}
+		if(e.getActionCommand().equals(SNAP_TO_GRID_5_STRING)){
+			editor.snapToGrid = 5;
+			editor.isSnapToGridOn = true;
+		}
+		if(e.getActionCommand().equals(SNAP_TO_GRID_10_STRING)){
+			editor.snapToGrid = 10;
+			editor.isSnapToGridOn = true;
+		}
+		if(e.getActionCommand().equals(SNAP_TO_GRID_25_STRING)){
+			editor.snapToGrid = 25;
+			editor.isSnapToGridOn = true;
+		}
+		if(e.getActionCommand().equals(SNAP_TO_GRID_50_STRING)){
+			editor.snapToGrid = 50;
+			editor.isSnapToGridOn = true;
+		}
 		if(e.getActionCommand().equals(SNAP_TO_GRID_CUSTOM_STRING)){}
 		if(e.getActionCommand().equals(SET_NEXT_STAGE_STRING)){
 			//TODO: this method of doing it may make it care about the *absolute* path of next stage, which is wrong

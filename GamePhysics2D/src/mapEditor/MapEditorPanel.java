@@ -47,6 +47,10 @@ public class MapEditorPanel extends JPanel {
 		//paint entities
 		editor.game.getSim().paintEntities(g2d, cornerX, cornerY, zoom);
 		
+		//paint entity additional info for selected entities
+		for(Entity e : editor.selectedEntities)
+			e.paintAdditionalEntityInfo(g2d, cornerX, cornerY, zoom);
+		
 		//paint selection boxes
 		for(Entity e : editor.selectedEntities){
 			g2d.setColor(MapEditorRunner.SELECTION_BOX_COLOR);
@@ -73,6 +77,14 @@ public class MapEditorPanel extends JPanel {
 			double offsetY = editor.gameMouseDragStartLoc.y - editor.gameMouseLoc.y;
 			for(Entity e : editor.selectedEntities)
 				e.paintEntity(g2d, cornerX+offsetX, cornerY+offsetY, zoom);
+			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+		}
+		//paint transparent version of entity to placed, showing where it will be placed
+		else if(editor.userState == MapEditorRunner.PLACING_ENTITY){
+			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+			double offsetX = -editor.gameMouseLoc.x;
+			double offsetY = -editor.gameMouseLoc.y;
+			editor.entityToPlace.paintEntity(g2d, cornerX+offsetX, cornerY+offsetY, zoom);
 			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 		}
 	}
