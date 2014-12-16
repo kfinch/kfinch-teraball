@@ -1,8 +1,14 @@
 package gamePvE;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.util.ArrayList;
 import java.util.List;
 
+import gamePhysics2D.BoundingLineSegment;
+import gamePhysics2D.BoundingShape;
 import gamePhysics2D.Entity;
 import gamePhysics2D.ShapeGroup;
 
@@ -109,5 +115,19 @@ public abstract class TogglableEntity extends Entity {
 	@Override
 	public void preStep(){
 		updateState();
+	}
+	
+	@Override
+	public void paintAdditionalEntityInfo(Graphics2D g2d, double xoffset, double yoffset, double scale){
+		Graphics2D gcopy = (Graphics2D) g2d.create();
+		Stroke dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{5}, 0);
+		gcopy.setStroke(dashed);
+		gcopy.setColor(Color.red);
+		
+		List<BoundingShape> linkLines = new ArrayList<BoundingShape>(buttons.size());
+		for(Entity e : buttons)
+			linkLines.add(new BoundingLineSegment(shapes.xLoc, shapes.yLoc, e.shapes.xLoc, e.shapes.yLoc));
+		ShapeGroup paint = new ShapeGroup(linkLines, null);
+		paint.paintShapes(gcopy, xoffset, yoffset, scale);
 	}
 }
